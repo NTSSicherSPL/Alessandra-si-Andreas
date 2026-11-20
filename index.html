@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>🌟 Aventurile lui Andreas și Alessandra 🌟</title>
+<style>
+  * { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+  html, body {
+    overflow-x: hidden;
+    touch-action: manipulation;
+  }
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 2.5em;
+    text-shadow: 3px 3px 0 #6c5ce7, 6px 6px 15px rgba(0,0,0,0.3);
+    margin: 20px 0;
+    animation: bounce 2s infinite;
+    pointer-events: none;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    80% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes shine {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.3); }
+  }
+  @keyframes slideIn {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  .welcome-screen, .menu-screen, .lesson-screen, .story-screen, .quiz-screen {
+    background: rgba(255,255,255,0.98);
+    border-radius: 30px;
+    padding: 30px 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    margin: 20px 0;
+    animation: pop 0.6s ease-out;
+    position: relative;
+    z-index: 10;
+  }
+  .btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 18px 40px;
+    font-size: 1.2em;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 0 #5a67d8, 0 15px 20px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+    font-weight: bold;
+    margin: 10px;
+    position: relative;
+    z-index: 100;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .btn:hover {
+    transform: translateY(3px);
+    box-shadow: 0 5px 0 #5a67d8, 0 10px 15px rgba(0,0,0,0.2);
+  }
+  .btn:active {
+    transform: translateY(8px);
+    box-shadow: 0 0 0 #5a67d8;
+  }
+  .mascot {
+    font-size: 5em;
+    text-align: center;
+    animation: float 3s ease-in-out infinite;
+    margin: 20px 0;
+    pointer-events: none;
+  }
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+    margin-top: 30px;
+  }
+  .lesson-card {
+    background: linear-gradient(135deg, var(--c1), var(--c2));
+    border-radius: 25px;
+    padding: 20px 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    color: white;
+    border: 5px solid white;
+    position: relative;
+    z-index: 50;
+    touch-action: manipulation;
+  }
+  .lesson-card:hover, .lesson-card:active {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  }
+  .lesson-card .icon {
+    font-size: 3.5em;
+    display: block;
+    margin-bottom: 10px;
+    animation: shine 2s infinite;
+    pointer-events: none;
+  }
+  .lesson-card h3 {
+    font-size: 1.2em;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+    pointer-events: none;
+  }
+  .lesson-content {
+    text-align: center;
+    position: relative;
+    z-index: 10;
+  }
+  .word-display {
+    font-size: 3.5em;
+    font-weight: bold;
+    color: #2d3436;
+    margin: 20px 0;
+    animation: slideIn 0.5s;
+  }
+  .sentence-box {
+    background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+    padding: 25px 20px;
+    border-radius: 20px;
+    font-size: 1.5em;
+    line-height: 1.6;
+    color: #2d3436;
+    margin: 20px 0;
+    border: 4px dashed #e17055;
+    animation: slideIn 0.5s;
+  }
+  .nav-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 100;
+  }
+  .progress-bar {
+    background: #dfe6e9;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .progress-fill {
+    background: linear-gradient(90deg, #00b894, #55efc4);
+    height: 100%;
+    transition: width 0.5s;
+    border-radius: 10px;
+  }
+  .score-display {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: #fdcb6e;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 1.1em;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 9999;
+    pointer-events: none;
+  }
+  .back-btn {
+    background: linear-gradient(135deg, #636e72, #2d3436);
+    box-shadow: 0 8px 0 #2d3436;
+  }
+  .confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #fd79a8;
+    animation: fall 3s linear;
+    pointer-events: none;
+    z-index: 10000;
+  }
+  @keyframes fall {
+    to { transform: translateY(100vh) rotate(720deg); }
+  }
+  .hidden { display: none !important; }
+  .speech-bubble {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 20px;
+    position: relative;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    font-size: 1.1em;
+    color: #2d3436;
+    pointer-events: none;
+  }
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 15px solid transparent;
+    border-top-color: white;
+  }
+  .quiz-option {
+    background: white;
+    border: 4px solid #74b9ff;
+    padding: 18px;
+    margin: 8px;
+    border-radius: 20px;
+    font-size: 1.3em;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-block;
+    min-width: 130px;
+    position: relative;
+    z-index: 50;
+    touch-action: manipulation;
+  }
+  .quiz-option:hover, .quiz-option:active {
+    background: #74b9ff;
+    color: white;
+    transform: scale(1.05);
+  }
+  .quiz-option.correct {
+    background: #00b894;
+    color: white;
+    border-color: #00b894;
+    animation: pop 0.5s;
+  }
+  .quiz-option.wrong {
+    background: #d63031;
+    color: white;
+    border-color: #d63031;
+  }
+  .number-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .number-cell {
+    background: linear-gradient(135deg, #74b9ff, #0984e3);
+    color: white;
+    padding: 12px 5px;
+    border-radius: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    touch-action: manipulation;
+    position: relative;
+    z-index: 20;
+  }
+  .number-cell:hover, .number-cell:active {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+  .number-cell.highlight {
+    background: linear-gradient(135deg, #fd79a8, #e84393);
+    animation: pop 0.5s;
+  }
+  .story-box {
+    background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+    padding: 25px 20px;
+    border-radius: 20px;
+    font-size: 1.2em;
+    line-height: 1.8;
+    color: #2d3436;
+    margin: 20px 0;
+    border: 4px dashed #e17055;
+  }
+  @media (min-width: 600px) {
+    .number-grid { grid-template-columns: repeat(10, 1fr); }
+    .number-cell { font-size: 1.4em; padding: 15px 5px; }
+    h1 { font-size: 2.8em; }
+    .word-display { font-size: 4em; }
+  }
+  @media (max-width: 600px) {
+    h1 { font-size: 1.8em; }
+    .welcome-screen, .menu-screen, .lesson-screen, .story-screen, .quiz-screen { 
+      padding: 20px 15px; 
+      border-radius: 20px;
+    }
+    .btn { padding: 15px 25px; font-size: 1em; }
+    .lesson-card { padding: 15px 10px; }
+    .lesson-card .icon { font-size: 2.8em; }
+    .lesson-card h3 { font-size: 1em; }
+    .mascot { font-size: 4em; }
+    .sentence-box { font-size: 1.2em; padding: 18px 15px; }
+    .quiz-option { font-size: 1.1em; padding: 14px; min-width: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="score-display" id="scoreDisplay">⭐ 0 stele</div>
+
+<div class="container">
+  <h1 id="mainTitle">🌟 Aventurile lui Andreas și Alessandra 🌟</h1>
+
+  <!-- ECRAN BUN VENIT -->
+  <div class="welcome-screen" id="welcomeScreen">
+    <div class="mascot">🦉</div>
+    <div class="speech-bubble">
+      Bună! Eu sunt <b>Bufnița Înțeleaptă</b> și te invit într-o aventură magică alături de <b>Andreas</b> și <b>Alessandra</b>! 🎉
+    </div>
+    <p style="text-align:center; font-size:1.2em; margin:20px 0; color:#2d3436;">
+      Hai să învățăm împreună lucruri minunate!
+    </p>
+    <div style="text-align:center;">
+      <button class="btn" onclick="startAdventure()">🚀 Începe Aventura!</button>
+    </div>
+  </div>
+
+  <!-- ECRAN MENIU -->
+  <div class="menu-screen hidden" id="menuScreen">
+    <div class="mascot">🦉</div>
+    <div class="speech-bubble">
+      Ce lecție vrei să explorăm astăzi?
+    </div>
+    <div class="lessons-grid">
+      <div class="lesson-card" style="--c1:#ff7675; --c2:#fd79a8;" onclick="openLesson('alfabet')">
+        <span class="icon">🔤</span>
+        <h3>Alfabetul</h3>
+      </div>
+      <div class="lesson-card" style="--c1:#74b9ff; --c2:#0984e3;" onclick="openLesson('numere100')">
+        <span class="icon">💯</span>
+        <h3>Numere 1-100</h3>
+      </div>
+      <div class="lesson-card" style="--c1:#55efc4; --c2:#00b894;" onclick="openLesson('cuvinte')">
+        <span class="icon">📝</span>
+        <h3>Cuvinte</h3>
+      </div>
+      <div class="lesson-card" style="--c1:#fdcb6e; --c2:#e17055;" onclick="openLesson('propozitii')">
+        <span class="icon">📖</span>
+        <h3>Propoziții</h3>
+      </div>
+      <div class="lesson-card" style="--c1:#a29bfe; --c2:#6c5ce7;" onclick="openLesson('animale')">
+        <span class="icon">🐾</span>
+        <h3>Animalele</h3>
+      </div>
+      <div class="lesson-card" style="--c1:#fd79a8; --c2:#e84393;" onclick="openLesson('culori')">
+        <span class="icon">🎨</span>
+        <h3>Culorile</h3>
+      </div>
+      <div class="lesson-card" style="--c1:#fab1a0; --c2:#e17055;" onclick="openLesson('poveste')">
+        <span class="icon">📚</span>
+        <h3>Poveste Magică</h3>
+      </div>
+      <div class="lesson-card" style="--c1:#81ecec; --c2:#00cec9;" onclick="openLesson('quiz')">
+        <span class="icon">🏆</span>
+        <h3>Quiz Final</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- ECRAN LECȚIE -->
+  <div class="lesson-screen hidden" id="lessonScreen">
+    <div class="mascot" id="lessonMascot">🦉</div>
+    <div class="speech-bubble" id="lessonSpeech">Hai să învățăm!</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+    <div class="lesson-content" id="lessonContent"></div>
+    <div class="nav-buttons">
+      <button class="btn back-btn" onclick="goBack()">◀ Înapoi</button>
+      <button class="btn" id="nextBtn" onclick="nextItem()">Următorul ▶</button>
+    </div>
+  </div>
+
+  <!-- ECRAN POVESTE -->
+  <div class="story-screen hidden" id="storyScreen">
+    <div class="mascot">📚</div>
+    <h2 style="text-align:center; color:#e17055; margin-bottom:20px;" id="storyTitle">Povestea Magică</h2>
+    <div class="story-box" id="storyBox"></div>
+    <div class="nav-buttons">
+      <button class="btn back-btn" onclick="goBack()">◀ Înapoi</button>
+      <button class="btn" id="storyNextBtn" onclick="nextStoryPage()">Pagina următoare ▶</button>
+    </div>
+  </div>
+
+  <!-- ECRAN QUIZ -->
+  <div class="quiz-screen hidden" id="quizScreen">
+    <div class="mascot">🏆</div>
+    <h2 style="text-align:center; color:#e17055;">Quiz Final!</h2>
+    <div class="progress-bar">
+      <div class="progress-fill" id="quizProgress" style="width: 0%"></div>
+    </div>
+    <div id="quizContent" style="text-align:center; margin:30px 0;"></div>
+    <div class="nav-buttons">
+      <button class="btn back-btn" onclick="goBack()">◀ Înapoi</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let score = 0;
+  let currentLesson = null;
+  let currentIndex = 0;
+  let storyPage = 0;
+  let quizIndex = 0;
+  let numberGridPage = 0;
+
+  const lessons = {
+    alfabet: {
+      title: 'Alfabetul',
+      mascot: '🔤',
+      items: [
+        {display: 'A', name: 'A cum ar fi... Aeroplanul ✈️', speech: 'A este prima literă din alfabet!'},
+        {display: 'B', name: 'B cum ar fi... Balonul 🎈', speech: 'B este pentru Balon!'},
+        {display: 'C', name: 'C cum ar fi... Casuța 🏠', speech: 'C este pentru Casă!'},
+        {display: 'D', name: 'D cum ar fi... Dinozaurul 🦖', speech: 'D este pentru Dinozaur!'},
+        {display: 'E', name: 'E cum ar fi... Elefantul 🐘', speech: 'E este pentru Elefant!'},
+        {display: 'F', name: 'F cum ar fi... Floarea 🌸', speech: 'F este pentru Floare!'},
+        {display: 'G', name: 'G cum ar fi... Girafa 🦒', speech: 'G este pentru Girafă!'},
+        {display: 'H', name: 'H cum ar fi... Hippo 🦛', speech: 'H este pentru Hippo!'},
+        {display: 'I', name: 'I cum ar fi... Inima ❤️', speech: 'I este pentru Inimă!'},
+        {display: 'J', name: 'J cum ar fi... Jucăria 🧸', speech: 'J este pentru Jucărie!'}
+      ]
+    },
+    numere100: {
+      title: 'Numere 1-100',
+      mascot: '💯',
+      type: 'numberGrid'
+    },
+    cuvinte: {
+      title: 'Cuvinte',
+      mascot: '📝',
+      items: [
+        {word: 'SOARE', emoji: '☀️', sentence: 'Soarele strălucește pe cer.', speech: 'Soarele ne dă lumină și căldură!'},
+        {word: 'LUNĂ', emoji: '🌙', sentence: 'Luna luminează noaptea.', speech: 'Luna strălucește pe cerul nopții!'},
+        {word: 'STELE', emoji: '⭐', sentence: 'Stelele sclipesc pe cer.', speech: 'Stelele sunt frumoase noaptea!'},
+        {word: 'COPAC', emoji: '🌳', sentence: 'Copacul are frunze verzi.', speech: 'Copacii ne oferă umbră!'},
+        {word: 'FLORI', emoji: '🌸', sentence: 'Florile sunt colorate și frumoase.', speech: 'Florile miros frumos!'},
+        {word: 'CÂINE', emoji: '🐶', sentence: 'Câinele este cel mai bun prieten.', speech: 'Câinele este credincios!'},
+        {word: 'PISICĂ', emoji: '🐱', sentence: 'Pisica toarce când este fericită.', speech: 'Pisica este blândă!'},
+        {word: 'CARTE', emoji: '📚', sentence: 'Cartea este plină de povești.', speech: 'Cărțile ne învață multe!'},
+        {word: 'ȘCOALĂ', emoji: '🏫', sentence: 'La școală învățăm lucruri noi.', speech: 'La școală ne facem prieteni!'},
+        {word: 'PRIETEN', emoji: '👫', sentence: 'Un prieten adevărat te ajută mereu.', speech: 'Prietenia este prețioasă!'},
+        {word: 'FAMILIE', emoji: '👨‍👩‍👧‍👦', sentence: 'Familia te iubește necondiționat.', speech: 'Familia este cea mai importantă!'},
+        {word: 'MARE', emoji: '🌊', sentence: 'Marea este imensă și albastră.', speech: 'Marea este misterioasă!'}
+      ]
+    },
+    propozitii: {
+      title: 'Propoziții',
+      mascot: '📖',
+      items: [
+        {sentence: 'Andreas merge la școală.', emoji: '🏫', type: 'simplă', speech: 'O propoziție simplă despre Andreas!'},
+        {sentence: 'Alessandra citește o carte.', emoji: '📚', type: 'simplă', speech: 'Alessandra iubește cărțile!'},
+        {sentence: 'Soarele strălucește pe cerul albastru.', emoji: '☀️', type: 'descriptivă', speech: 'O zi frumoasă de vară!'},
+        {sentence: 'Câinele aleargă după minge în parc.', emoji: '🐕', type: 'acțiune', speech: 'Câinele se distrează!'},
+        {sentence: 'Florile colorate înfloresc în grădină primăvara.', emoji: '🌸', type: 'descriptivă', speech: 'Primăvara este magică!'},
+        {sentence: 'Andreas și Alessandra învață împreună.', emoji: '👫', type: 'compusă', speech: 'Împreună suntem mai puternici!'},
+        {sentence: 'Pisica doarme pe canapeaua moale.', emoji: '🐱', type: 'descriptivă', speech: 'Pisica se odihnește!'},
+        {sentence: 'Copiii se joacă în curtea școlii.', emoji: '🏫', type: 'acțiune', speech: 'Joaca este importantă!'},
+        {sentence: 'Luna luminează cerul nopții.', emoji: '🌙', type: 'descriptivă', speech: 'O noapte magică!'},
+        {sentence: 'Bufnița înțeleaptă citește cărți vechi.', emoji: '🦉', type: 'descriptivă', speech: 'Bufnița este foarte deșteaptă!'}
+      ]
+    },
+    animale: {
+      title: 'Animalele',
+      mascot: '🐾',
+      items: [
+        {display: '🐶', name: 'Câinele', speech: 'Câinele face: HAM HAM!'},
+        {display: '🐱', name: 'Pisica', speech: 'Pisica face: MIAU!'},
+        {display: '🐮', name: 'Vaca', speech: 'Vaca face: MUU!'},
+        {display: '🐷', name: 'Porcul', speech: 'Porcul face: OINK!'},
+        {display: '🐔', name: 'Găina', speech: 'Găina face: COT-CODAC!'},
+        {display: '🐸', name: 'Broasca', speech: 'Broasca face: OAC OAC!'},
+        {display: '🦁', name: 'Leul', speech: 'Leul face: ROAR!'},
+        {display: '🐘', name: 'Elefantul', speech: 'Elefantul are trompă lungă!'},
+        {display: '🦒', name: 'Girafa', speech: 'Girafa are gâtul foarte lung!'},
+        {display: '🐧', name: 'Pinguinul', speech: 'Pinguinul trăiește la gheață!'}
+      ]
+    },
+    culori: {
+      title: 'Culorile',
+      mascot: '🎨',
+      items: [
+        {display: 'color-box', color: '#e74c3c', name: 'Roșu', speech: 'Roșu ca mărul! 🍎'},
+        {display: 'color-box', color: '#3498db', name: 'Albastru', speech: 'Albastru ca cerul! ☁️'},
+        {display: 'color-box', color: '#f1c40f', name: 'Galben', speech: 'Galben ca soarele! ☀️'},
+        {display: 'color-box', color: '#2ecc71', name: 'Verde', speech: 'Verde ca iarba! 🌿'},
+        {display: 'color-box', color: '#9b59b6', name: 'Violet', speech: 'Violet ca o floare! 💜'},
+        {display: 'color-box', color: '#e67e22', name: 'Portocaliu', speech: 'Portocaliu ca o portocală! 🍊'},
+        {display: 'color-box', color: '#1abc9c', name: 'Turcoaz', speech: 'Turcoaz ca marea! 🌊'},
+        {display: 'color-box', color: '#ec407a', name: 'Roz', speech: 'Roz ca un trandafir! 🌹'}
+      ]
+    }
+  };
+
+  const storyPages = [
+    {
+      title: 'Capitolul 1: Începutul Aventurei',
+      text: 'A fost odată ca niciodată, doi prieteni curajoși pe nume <b>Andreas</b> și <b>Alessandra</b>. Într-o dimineață însorită, au găsit o carte magică în podul casei. 📚✨'
+    },
+    {
+      title: 'Capitolul 2: Bufnița Înțeleaptă',
+      text: 'Când au deschis cartea, a apărut <b>Bufnița Înțeleaptă</b> care le-a spus: "Bine ați venit în Ținutul Cunoașterii! Aici veți învăța lucruri minunate!" 🦉'
+    },
+    {
+      title: 'Capitolul 3: Pădurea Literelor',
+      text: 'Primul loc pe care l-au vizitat a fost <b>Pădurea Literelor</b>. Copacii aveau litere în loc de frunze, iar vântul șoptea: "A, B, C, D..." 🌳🔤'
+    },
+    {
+      title: 'Capitolul 4: Râul Numerelor',
+      text: 'Apoi au ajuns la <b>Râul Numerelor</b>. Peștii săreau din apă și formau numere: 1, 2, 3... până la 100! Andreas a numărat toate numerele! 🐟💯'
+    },
+    {
+      title: 'Capitolul 5: Grădina Cuvintelor',
+      text: 'În <b>Grădina Cuvintelor</b>, Alessandra a descoperit flori care spuneau cuvinte frumoase: SOARE, LUNĂ, STELE, PRIETENIE... 🌸📝'
+    },
+    {
+      title: 'Capitolul 6: Valea Propozițiilor',
+      text: 'Au ajuns apoi în <b>Valea Propozițiilor</b>, unde pietrele formau propoziții complete. "Andreas și Alessandra învață împreună!" 📖✨'
+    },
+    {
+      title: 'Capitolul 7: Prietenii Animale',
+      text: 'Au întâlnit apoi animale vorbitoare: un câine prietenos, o pisică jucăușă și un elefant înțelept. Toți erau fericiți să-i cunoască! 🐶🐱🐘'
+    },
+    {
+      title: 'Capitolul 8: Comoara Finală',
+      text: 'La finalul aventurii, Andreas și Alessandra au găsit o comoară: <b>Cunoașterea</b>! Au învățat că a citi, a număra și a descoperi lucruri noi este cea mai mare aventură! 💎📖'
+    },
+    {
+      title: 'Final Fericit!',
+      text: '🎉 <b>Andreas</b> și <b>Alessandra</b> au devenit cei mai deștepți exploratori din lume! Și tu poți fi ca ei, învățând în fiecare zi! Felicitări! 🌟🏆'
+    }
+  ];
+
+  const quizQuestions = [
+    {q: 'Ce literă începe cuvântul "Măr"? 🍎', options: ['A', 'M', 'B', 'C'], correct: 1},
+    {q: 'Câte picioare are un câine? 🐶', options: ['2', '4', '6', '8'], correct: 1},
+    {q: 'Ce culoare are soarele? ☀️', options: ['Albastru', 'Verde', 'Galben', 'Roșu'], correct: 2},
+    {q: 'Care animal face "MIAU"? 🐱', options: ['Câinele', 'Pisica', 'Vaca', 'Porcul'], correct: 1},
+    {q: 'Câte zile sunt într-o săptămână?', options: ['5', '6', '7', '10'], correct: 2},
+    {q: 'Care număr vine după 49?', options: ['48', '50', '51', '60'], correct: 1},
+    {q: 'Cuvântul "SOARE" are câte litere?', options: ['4', '5', '6', '7'], correct: 1},
+    {q: 'Care propoziție este corectă?', options: ['Andreas merge.', 'Merge Andreas.', 'Andreas.', 'Merge.'], correct: 0},
+    {q: 'Ce animal are trompă lungă? 🐘', options: ['Leul', 'Girafa', 'Elefantul', 'Pinguinul'], correct: 2},
+    {q: 'Care număr este mai mare?', options: ['89', '98', '79', '97'], correct: 1}
+  ];
+
+  function startAdventure() {
+    document.getElementById('welcomeScreen').classList.add('hidden');
+    document.getElementById('menuScreen').classList.remove('hidden');
+  }
+
+  function openLesson(lessonId) {
+    if (lessonId === 'poveste') {
+      openStory();
+      return;
+    }
+    if (lessonId === 'quiz') {
+      openQuiz();
+      return;
+    }
+    currentLesson = lessonId;
+    currentIndex = 0;
+    document.getElementById('menuScreen').classList.add('hidden');
+    document.getElementById('lessonScreen').classList.remove('hidden');
+    document.getElementById('lessonMascot').textContent = lessons[lessonId].mascot;
+    
+    if (lessons[lessonId].type === 'numberGrid') {
+      showNumberGrid();
+    } else {
+      showCurrentItem();
+    }
+  }
+
+  function showNumberGrid() {
+    const content = document.getElementById('lessonContent');
+    document.getElementById('lessonSpeech').textContent = 'Iată numerele de la 1 la 100! Apasă pe un număr!';
+    
+    let html = '<div class="number-grid">';
+    const start = numberGridPage * 50 + 1;
+    const end = Math.min(start + 49, 100);
+    
+    for (let i = start; i <= end; i++) {
+      html += `<div class="number-cell" onclick="selectNumber(${i})">${i}</div>`;
+    }
+    html += '</div>';
+    
+    if (numberGridPage === 0) {
+      html += '<button class="btn" onclick="nextNumberPage()" style="margin-top:20px;">Următoarele 50 ▶</button>';
+    } else {
+      html += '<button class="btn back-btn" onclick="prevNumberPage()" style="margin-top:20px;">◀ Primele 50</button>';
+    }
+    
+    content.innerHTML = html;
+    document.getElementById('progressFill').style.width = ((numberGridPage + 1) * 50) + '%';
+    document.getElementById('nextBtn').style.display = 'none';
+  }
+
+  function selectNumber(num) {
+    const cells = document.querySelectorAll('.number-cell');
+    cells.forEach(cell => cell.classList.remove('highlight'));
+    
+    const cell = event.target;
+    if (cell && cell.classList.contains('number-cell')) {
+      cell.classList.add('highlight');
+      document.getElementById('lessonSpeech').textContent = `Ai selectat numărul ${num}! Bravo! 🎉`;
+      addScore(1);
+    }
+  }
+
+  function nextNumberPage() {
+    numberGridPage = 1;
+    showNumberGrid();
+  }
+
+  function prevNumberPage() {
+    numberGridPage = 0;
+    showNumberGrid();
+  }
+
+  function showCurrentItem() {
+    const lesson = lessons[currentLesson];
+    const item = lesson.items[currentIndex];
+    const content = document.getElementById('lessonContent');
+    
+    document.getElementById('lessonSpeech').textContent = item.speech || 'Hai să învățăm!';
+    
+    let html = '';
+    
+    if (currentLesson === 'cuvinte') {
+      html = `
+        <div class="word-display">${item.word}</div>
+        <div style="font-size:5em; margin:20px 0;">${item.emoji}</div>
+        <div class="sentence-box">${item.sentence}</div>
+      `;
+    } else if (currentLesson === 'propozitii') {
+      html = `
+        <div style="font-size:5em; margin:20px 0;">${item.emoji}</div>
+        <div class="sentence-box">${item.sentence}</div>
+        <p style="font-size:1.2em; color:#6c5ce7; margin-top:20px; font-weight:bold;">Tip: ${item.type}</p>
+      `;
+    } else if (item.display === 'color-box') {
+      html = `
+        <div style="width:180px; height:180px; border-radius:30px; margin:20px auto; background:${item.color}; box-shadow:0 10px 30px rgba(0,0,0,0.2); animation:pop 0.5s;"></div>
+        <div style="font-size:2.5em; font-weight:bold; color:#2d3436; margin:20px 0;">${item.name}</div>
+      `;
+    } else if (currentLesson === 'alfabet') {
+      html = `
+        <div style="font-size:8em; font-weight:bold; background:linear-gradient(135deg, #fd79a8, #fdcb6e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:pop 0.5s;">${item.display}</div>
+        <div style="font-size:2em; color:#2d3436; font-weight:bold; margin:20px 0;">${item.name}</div>
+      `;
+    } else {
+      html = `
+        <div style="font-size:7em; margin:20px 0; animation:pop 0.5s;">${item.display}</div>
+        <div style="font-size:2em; color:#2d3436; font-weight:bold; margin:20px 0;">${item.name}</div>
+      `;
+    }
+    
+    content.innerHTML = html;
+    
+    const progress = ((currentIndex + 1) / lesson.items.length) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+    document.getElementById('nextBtn').style.display = 'inline-block';
+  }
+
+  function nextItem() {
+    const lesson = lessons[currentLesson];
+    if (currentIndex < lesson.items.length - 1) {
+      currentIndex++;
+      showCurrentItem();
+      addScore(2);
+    } else {
+      addScore(10);
+      showConfetti();
+      document.getElementById('lessonSpeech').textContent = `Bravo! Ai terminat lecția "${lesson.title}"! 🎉`;
+      document.getElementById('lessonContent').innerHTML = '<div class="mascot">🏆</div><h2 style="color:#00b894;">Felicitări!</h2>';
+      document.getElementById('nextBtn').textContent = 'La meniu ▶';
+      document.getElementById('nextBtn').onclick = goBack;
+    }
+  }
+
+  function openStory() {
+    storyPage = 0;
+    document.getElementById('menuScreen').classList.add('hidden');
+    document.getElementById('storyScreen').classList.remove('hidden');
+    showStoryPage();
+  }
+
+  function showStoryPage() {
+    const page = storyPages[storyPage];
+    document.getElementById('storyTitle').textContent = page.title;
+    document.getElementById('storyBox').innerHTML = page.text;
+    const progress = ((storyPage + 1) / storyPages.length) * 100;
+    document.getElementById('quizProgress').style.width = progress + '%';
+    
+    if (storyPage === storyPages.length - 1) {
+      document.getElementById('storyNextBtn').textContent = 'Final 🎉';
+    } else {
+      document.getElementById('storyNextBtn').textContent = 'Pagina următoare ▶';
+    }
+  }
+
+  function nextStoryPage() {
+    if (storyPage < storyPages.length - 1) {
+      storyPage++;
+      showStoryPage();
+      addScore(3);
+    } else {
+      addScore(15);
+      showConfetti();
+      goBack();
+    }
+  }
+
+  function openQuiz() {
+    quizIndex = 0;
+    document.getElementById('menuScreen').classList.add('hidden');
+    document.getElementById('quizScreen').classList.remove('hidden');
+    showQuizQuestion();
+  }
+
+  function showQuizQuestion() {
+    if (quizIndex >= quizQuestions.length) {
+      finishQuiz();
+      return;
+    }
+    const q = quizQuestions[quizIndex];
+    let html = `<h3 style="font-size:1.5em; margin:20px 0; color:#2d3436;">${q.q}</h3><div>`;
+    q.options.forEach((opt, i) => {
+      html += `<div class="quiz-option" onclick="checkAnswer(${i}, ${q.correct})">${opt}</div>`;
+    });
+    html += '</div>';
+    document.getElementById('quizContent').innerHTML = html;
+    const progress = (quizIndex / quizQuestions.length) * 100;
+    document.getElementById('quizProgress').style.width = progress + '%';
+  }
+
+  function checkAnswer(selected, correct) {
+    const options = document.querySelectorAll('.quiz-option');
+    options.forEach((opt, i) => {
+      opt.onclick = null;
+      if (i === correct) opt.classList.add('correct');
+      else if (i === selected) opt.classList.add('wrong');
+    });
+    if (selected === correct) {
+      addScore(5);
+      showConfetti();
+    }
+    setTimeout(() => {
+      quizIndex++;
+      showQuizQuestion();
+    }, 1500);
+  }
+
+  function finishQuiz() {
+    document.getElementById('quizContent').innerHTML = `
+      <div class="mascot">🏆</div>
+      <h2 style="color:#00b894; font-size:2em;">Felicitări, Andreas și Alessandra!</h2>
+      <p style="font-size:1.3em; margin:20px 0;">Ai terminat toate lecțiile!</p>
+      <div style="text-align:center; font-size:2em; margin:20px 0; color:#fdcb6e;">⭐ ${score} stele câștigate ⭐</div>
+    `;
+    document.getElementById('quizProgress').style.width = '100%';
+    showConfetti();
+    showConfetti();
+  }
+
+  function goBack() {
+    document.getElementById('lessonScreen').classList.add('hidden');
+    document.getElementById('storyScreen').classList.add('hidden');
+    document.getElementById('quizScreen').classList.add('hidden');
+    document.getElementById('menuScreen').classList.remove('hidden');
+    document.getElementById('nextBtn').textContent = 'Următorul ▶';
+    document.getElementById('nextBtn').onclick = nextItem;
+    document.getElementById('nextBtn').style.display = 'inline-block';
+    numberGridPage = 0;
+  }
+
+  function addScore(points) {
+    score += points;
+    document.getElementById('scoreDisplay').textContent = `⭐ ${score} stele`;
+  }
+
+  function showConfetti() {
+    const colors = ['#fd79a8', '#fdcb6e', '#74b9ff', '#55efc4', '#a29bfe', '#ff7675'];
+    for (let i = 0; i < 30; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDelay = Math.random() * 0.5 + 's';
+      confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 3500);
+    }
+  }
+</script>
+
+</body>
+</html>
