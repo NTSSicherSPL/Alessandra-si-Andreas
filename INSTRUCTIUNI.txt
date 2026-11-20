@@ -1,1 +1,1 @@
-GitHub Pages: upload the five files (index.html, manifest.webmanifest, sw.js, icon-192.png, icon-512.png) into the root of Alessandra-si-Andreas repository. Open the HTTPS site online once before testing airplane mode. Offline speech needs installed English TTS voices. Progress remains in the same localStorage key.
+Versiune cu alegeri interactive pentru 8–9 ani. Încarcă cele cinci fișiere ale aplicației în rădăcina repository-ului GitHub Pages. Explicații în română, pronunție engleză, progres separat. Testează vocile pe Android.
