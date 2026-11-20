@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="ro">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<title>🌟 Aventurile lui Andreas și Alessandra 🌟</title>
-<style>
+<!DOCTYPE html><html lang="ro"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#6c5ce7"><title>Aventurile lui Andreas și Alessandra</title><style>
   * { 
     margin: 0; 
     padding: 0; 
@@ -96,6 +88,35 @@
   .btn:active {
     transform: translateY(8px);
     box-shadow: 0 0 0 #5a67d8;
+  }
+  .sound-controls {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 9999;
+    display: flex;
+    gap: 10px;
+  }
+  .sound-btn {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5em;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    touch-action: manipulation;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sound-btn:active {
+    transform: scale(0.95);
+  }
+  .sound-btn.muted {
+    background: linear-gradient(135deg, #636e72, #2d3436);
   }
   .mascot {
     font-size: 5em;
@@ -324,121 +345,18 @@
     .mascot { font-size: 4em; }
     .sentence-box { font-size: 1.2em; padding: 18px 15px; }
     .quiz-option { font-size: 1.1em; padding: 14px; min-width: 110px; }
+    .sound-controls { top: 5px; left: 5px; }
+    .sound-btn { width: 40px; height: 40px; font-size: 1.2em; }
   }
-</style>
-</head>
-<body>
 
-<div class="score-display" id="scoreDisplay">⭐ 0 stele</div>
-
-<div class="container">
-  <h1 id="mainTitle">🌟 Aventurile lui Andreas și Alessandra 🌟</h1>
-
-  <!-- ECRAN BUN VENIT -->
-  <div class="welcome-screen" id="welcomeScreen">
-    <div class="mascot">🦉</div>
-    <div class="speech-bubble">
-      Bună! Eu sunt <b>Bufnița Înțeleaptă</b> și te invit într-o aventură magică alături de <b>Andreas</b> și <b>Alessandra</b>! 🎉
-    </div>
-    <p style="text-align:center; font-size:1.2em; margin:20px 0; color:#2d3436;">
-      Hai să învățăm împreună lucruri minunate!
-    </p>
-    <div style="text-align:center;">
-      <button class="btn" onclick="startAdventure()">🚀 Începe Aventura!</button>
-    </div>
-  </div>
-
-  <!-- ECRAN MENIU -->
-  <div class="menu-screen hidden" id="menuScreen">
-    <div class="mascot">🦉</div>
-    <div class="speech-bubble">
-      Ce lecție vrei să explorăm astăzi?
-    </div>
-    <div class="lessons-grid">
-      <div class="lesson-card" style="--c1:#ff7675; --c2:#fd79a8;" onclick="openLesson('alfabet')">
-        <span class="icon">🔤</span>
-        <h3>Alfabetul</h3>
-      </div>
-      <div class="lesson-card" style="--c1:#74b9ff; --c2:#0984e3;" onclick="openLesson('numere100')">
-        <span class="icon">💯</span>
-        <h3>Numere 1-100</h3>
-      </div>
-      <div class="lesson-card" style="--c1:#55efc4; --c2:#00b894;" onclick="openLesson('cuvinte')">
-        <span class="icon">📝</span>
-        <h3>Cuvinte</h3>
-      </div>
-      <div class="lesson-card" style="--c1:#fdcb6e; --c2:#e17055;" onclick="openLesson('propozitii')">
-        <span class="icon">📖</span>
-        <h3>Propoziții</h3>
-      </div>
-      <div class="lesson-card" style="--c1:#a29bfe; --c2:#6c5ce7;" onclick="openLesson('animale')">
-        <span class="icon">🐾</span>
-        <h3>Animalele</h3>
-      </div>
-      <div class="lesson-card" style="--c1:#fd79a8; --c2:#e84393;" onclick="openLesson('culori')">
-        <span class="icon">🎨</span>
-        <h3>Culorile</h3>
-      </div>
-      <div class="lesson-card" style="--c1:#fab1a0; --c2:#e17055;" onclick="openLesson('poveste')">
-        <span class="icon">📚</span>
-        <h3>Poveste Magică</h3>
-      </div>
-      <div class="lesson-card" style="--c1:#81ecec; --c2:#00cec9;" onclick="openLesson('quiz')">
-        <span class="icon">🏆</span>
-        <h3>Quiz Final</h3>
-      </div>
-    </div>
-  </div>
-
-  <!-- ECRAN LECȚIE -->
-  <div class="lesson-screen hidden" id="lessonScreen">
-    <div class="mascot" id="lessonMascot">🦉</div>
-    <div class="speech-bubble" id="lessonSpeech">Hai să învățăm!</div>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-    </div>
-    <div class="lesson-content" id="lessonContent"></div>
-    <div class="nav-buttons">
-      <button class="btn back-btn" onclick="goBack()">◀ Înapoi</button>
-      <button class="btn" id="nextBtn" onclick="nextItem()">Următorul ▶</button>
-    </div>
-  </div>
-
-  <!-- ECRAN POVESTE -->
-  <div class="story-screen hidden" id="storyScreen">
-    <div class="mascot">📚</div>
-    <h2 style="text-align:center; color:#e17055; margin-bottom:20px;" id="storyTitle">Povestea Magică</h2>
-    <div class="story-box" id="storyBox"></div>
-    <div class="nav-buttons">
-      <button class="btn back-btn" onclick="goBack()">◀ Înapoi</button>
-      <button class="btn" id="storyNextBtn" onclick="nextStoryPage()">Pagina următoare ▶</button>
-    </div>
-  </div>
-
-  <!-- ECRAN QUIZ -->
-  <div class="quiz-screen hidden" id="quizScreen">
-    <div class="mascot">🏆</div>
-    <h2 style="text-align:center; color:#e17055;">Quiz Final!</h2>
-    <div class="progress-bar">
-      <div class="progress-fill" id="quizProgress" style="width: 0%"></div>
-    </div>
-    <div id="quizContent" style="text-align:center; margin:30px 0;"></div>
-    <div class="nav-buttons">
-      <button class="btn back-btn" onclick="goBack()">◀ Înapoi</button>
-    </div>
-  </div>
-
-</div>
-
-<script>
-  let score = 0;
-  let currentLesson = null;
-  let currentIndex = 0;
-  let storyPage = 0;
-  let quizIndex = 0;
-  let numberGridPage = 0;
-
-  const lessons = {
+body{padding-bottom:40px}h1{font-size:clamp(1.45rem,4vw,2.6rem);margin:24px 0 12px;padding:12px 0}.container{padding:58px 12px 20px;max-width:1100px}.topbar{position:fixed;z-index:1000;top:0;left:0;right:0;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:5px;padding:6px 9px;background:#fffefa;box-shadow:0 3px 18px #0002;font-size:.82rem}.smallbtn{border:0;border-radius:14px;padding:9px 10px;background:#e8e4ff;font-size:1rem;cursor:pointer}#profileLabel{font-weight:800;color:#5a43a8}#starsLabel{font-weight:800;color:#b57605}.panel{background:#fffffff7;border-radius:26px;padding:22px 17px;margin:12px 0;box-shadow:0 16px 45px #0003;text-align:center}.panel h2{color:#5c4aaf;font-size:1.55rem;margin:10px}.panel h3{color:#43397c;margin:28px 0 12px}.panel p{line-height:1.5}.profilegrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:600px;margin:24px auto}.profile{border:4px solid #fff;border-radius:25px;background:linear-gradient(135deg,#74b9ff,#b8a4fa);color:white;padding:25px 10px;box-shadow:0 8px 20px #0002;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:1.3rem}.profile:nth-child(2){background:linear-gradient(135deg,#ff8fab,#c084fc)}.profile span{font-size:4rem}.profile small{font-size:.9rem}.hint{color:#666;font-size:.9rem;margin-top:20px}.lessons-grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:12px;margin:12px 0 24px}.lesson-card{padding:16px 10px;min-height:126px;display:flex;flex-direction:column;align-items:center;justify-content:center}.lesson-card .icon{font-size:2.2rem;margin:0 0 8px}.lesson-card h3{font-size:1rem;margin:0;color:#fff}.lesson-card small{display:block;margin-top:7px;font-size:.75rem;color:#fff}.lesson-card.locked{filter:grayscale(.8);opacity:.75}.levellegend{font-size:.85rem;color:#666}.chapterheading{display:flex;align-items:center;justify-content:center;gap:15px}.bigicon{font-size:3.4rem}.modebar{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin:20px 0}.modebar button{border:2px solid #c7bfff;background:white;border-radius:16px;padding:10px;font-weight:bold;color:#5440a4;cursor:pointer}.modebar button.active{background:#6c5ce7;color:white}.phrase{background:#f4f0ff;border-radius:20px;padding:22px 12px;margin:16px 0}.english{font-size:clamp(1.3rem,4vw,2rem);font-weight:800;color:#4636a4;line-height:1.5}.romanian{font-size:1.2rem;color:#4b5563;margin-top:12px}.listenbtn{background:#00a88f;color:#fff;border:0;border-radius:16px;padding:12px 18px;margin:8px;cursor:pointer;font-weight:800}.quiz-option{font-size:1rem;min-width:0;max-width:100%;margin:7px;padding:14px;cursor:pointer}.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.answers .quiz-option{margin:0}.feedback{font-size:1.2rem;font-weight:800;min-height:30px;margin:15px 0}.wordbank{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:15px 0}.wordbank button{border:2px solid #7a70d7;border-radius:14px;background:#f2efff;padding:12px;font-size:1.1rem;cursor:pointer}.wordbank button:disabled{opacity:.3}.answerbox{min-height:65px;border:3px dashed #9d91e3;border-radius:16px;padding:12px;margin:16px 0;display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:center}.answerbox button{border:0;border-radius:9px;background:#e1dbff;padding:8px}.mutedtext{color:#667085}.btn{padding:13px 19px;font-size:1rem;margin:7px}.nav-buttons{margin-top:22px}.progress-bar{margin:18px 0}.original-box{font-size:1.5rem;padding:14px;line-height:1.5}.original-emoji{font-size:4rem}.number-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.number-cell{font-size:1rem}.story-box{text-align:left}.hidden{display:none!important}@media(max-width:420px){.topbar{font-size:.7rem}.smallbtn{padding:7px 6px;font-size:.85rem}.panel{padding:18px 10px}.answers{grid-template-columns:1fr}.profile span{font-size:3rem}.chapterheading{gap:5px}.bigicon{font-size:2.4rem}}
+</style></head><body><div class="topbar"><button id="homeBtn" class="smallbtn" onclick="showProfiles()">🏠 Profiluri</button><span id="profileLabel">Alege profilul</span><span id="starsLabel">⭐ 0</span><button class="smallbtn" onclick="toggleMusic()" id="musicBtn">🎵</button><button class="smallbtn" onclick="toggleVoice()" id="voiceBtn">🔊</button></div>
+<main class="container"><h1>🌟 Aventurile lui Andreas și Alessandra 🌟</h1>
+<section id="profiles" class="panel"><div class="mascot">🦉</div><h2>Cine se joacă astăzi?</h2><p>Două aventuri, două progresuri separate!</p><div class="profilegrid"><button class="profile" onclick="chooseProfile('Andreas')"><span>🧑‍🚀</span><b>Andreas</b><small>8 ani</small></button><button class="profile" onclick="chooseProfile('Alessandra')"><span>👩‍🚀</span><b>Alessandra</b><small>9 ani</small></button></div><p class="hint">Jocul și progresul se păstrează pe acest dispozitiv.</p></section>
+<section id="menu" class="panel hidden"><div class="mascot">🦉</div><h2 id="welcomeName">Bine ai venit!</h2><p>Alege o aventură. Ascultă, citește și câștigă stele!</p><h3>📖 Lecțiile originale</h3><div id="originalGrid" class="lessons-grid"></div><h3>🇬🇧 Cele 30 de capitole de engleză</h3><div class="levellegend">🟢 A1 începător · 🔵 A1+ intermediar · 🟣 A2 provocare</div><div id="chapterGrid" class="lessons-grid"></div></section>
+<section id="play" class="panel hidden"><div class="chapterheading"><span id="chapterIcon" class="bigicon">📘</span><div><h2 id="chapterTitle"></h2><p id="chapterMeta"></p></div></div><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div><div class="modebar"><button onclick="setMode('learn')" id="modeLearn">📖 Învață</button><button onclick="setMode('quiz')" id="modeQuiz">🎯 Quiz</button><button onclick="setMode('build')" id="modeBuild">🧩 Construiește</button><button onclick="setMode('listen')" id="modeListen">🎧 Ascultă</button></div><div id="exercise"></div><div class="nav-buttons"><button class="btn back-btn" onclick="showMenu()">◀ Meniu</button><button class="btn" id="nextBtn" onclick="nextExercise()">Următorul ▶</button></div></section>
+<section id="finish" class="panel hidden"><div class="mascot">🏆</div><h2>Felicitări!</h2><p id="finishText"></p><div class="nav-buttons"><button class="btn" onclick="showMenu()">La capitole ▶</button><button class="btn" onclick="restartChapter()">Joacă din nou 🔄</button></div></section>
+</main><script>  const lessons = {
     alfabet: {
       title: 'Alfabetul',
       mascot: '🔤',
@@ -514,14 +432,14 @@
       title: 'Culorile',
       mascot: '🎨',
       items: [
-        {display: 'color-box', color: '#e74c3c', name: 'Roșu', speech: 'Roșu ca mărul! 🍎'},
-        {display: 'color-box', color: '#3498db', name: 'Albastru', speech: 'Albastru ca cerul! ☁️'},
-        {display: 'color-box', color: '#f1c40f', name: 'Galben', speech: 'Galben ca soarele! ☀️'},
-        {display: 'color-box', color: '#2ecc71', name: 'Verde', speech: 'Verde ca iarba! 🌿'},
-        {display: 'color-box', color: '#9b59b6', name: 'Violet', speech: 'Violet ca o floare! 💜'},
-        {display: 'color-box', color: '#e67e22', name: 'Portocaliu', speech: 'Portocaliu ca o portocală! 🍊'},
-        {display: 'color-box', color: '#1abc9c', name: 'Turcoaz', speech: 'Turcoaz ca marea! 🌊'},
-        {display: 'color-box', color: '#ec407a', name: 'Roz', speech: 'Roz ca un trandafir! 🌹'}
+        {display: 'color-box', color: '#e74c3c', name: 'Roșu', speech: 'Roșu ca mărul!'},
+        {display: 'color-box', color: '#3498db', name: 'Albastru', speech: 'Albastru ca cerul!'},
+        {display: 'color-box', color: '#f1c40f', name: 'Galben', speech: 'Galben ca soarele!'},
+        {display: 'color-box', color: '#2ecc71', name: 'Verde', speech: 'Verde ca iarba!'},
+        {display: 'color-box', color: '#9b59b6', name: 'Violet', speech: 'Violet ca o floare!'},
+        {display: 'color-box', color: '#e67e22', name: 'Portocaliu', speech: 'Portocaliu ca o portocală!'},
+        {display: 'color-box', color: '#1abc9c', name: 'Turcoaz', speech: 'Turcoaz ca marea!'},
+        {display: 'color-box', color: '#ec407a', name: 'Roz', speech: 'Roz ca un trandafir!'}
       ]
     }
   };
@@ -529,304 +447,126 @@
   const storyPages = [
     {
       title: 'Capitolul 1: Începutul Aventurei',
-      text: 'A fost odată ca niciodată, doi prieteni curajoși pe nume <b>Andreas</b> și <b>Alessandra</b>. Într-o dimineață însorită, au găsit o carte magică în podul casei. 📚✨'
+      text: 'A fost odată ca niciodată, doi prieteni curajoși pe nume <b>Andreas</b> și <b>Alessandra</b>. Într-o dimineață însorită, au găsit o carte magică în podul casei. 📚✨',
+      speech: 'A fost odată ca niciodată, doi prieteni curajoși pe nume Andreas și Alessandra. Într-o dimineață însorită, au găsit o carte magică în podul casei.'
     },
     {
       title: 'Capitolul 2: Bufnița Înțeleaptă',
-      text: 'Când au deschis cartea, a apărut <b>Bufnița Înțeleaptă</b> care le-a spus: "Bine ați venit în Ținutul Cunoașterii! Aici veți învăța lucruri minunate!" 🦉'
+      text: 'Când au deschis cartea, a apărut <b>Bufnița Înțeleaptă</b> care le-a spus: "Bine ați venit în Ținutul Cunoașterii! Aici veți învăța lucruri minunate!" 🦉',
+      speech: 'Când au deschis cartea, a apărut Bufnița Înțeleaptă care le-a spus: Bine ați venit în Ținutul Cunoașterii! Aici veți învăța lucruri minunate!'
     },
     {
       title: 'Capitolul 3: Pădurea Literelor',
-      text: 'Primul loc pe care l-au vizitat a fost <b>Pădurea Literelor</b>. Copacii aveau litere în loc de frunze, iar vântul șoptea: "A, B, C, D..." 🌳🔤'
+      text: 'Primul loc pe care l-au vizitat a fost <b>Pădurea Literelor</b>. Copacii aveau litere în loc de frunze, iar vântul șoptea: "A, B, C, D..." 🌳🔤',
+      speech: 'Primul loc pe care l-au vizitat a fost Pădurea Literelor. Copacii aveau litere în loc de frunze, iar vântul șoptea: A, B, C, D...'
     },
     {
       title: 'Capitolul 4: Râul Numerelor',
-      text: 'Apoi au ajuns la <b>Râul Numerelor</b>. Peștii săreau din apă și formau numere: 1, 2, 3... până la 100! Andreas a numărat toate numerele! 🐟💯'
+      text: 'Apoi au ajuns la <b>Râul Numerelor</b>. Peștii săreau din apă și formau numere: 1, 2, 3... până la 100! Andreas a numărat toate numerele! 🐟💯',
+      speech: 'Apoi au ajuns la Râul Numerelor. Peștii săreau din apă și formau numere: 1, 2, 3... până la 100! Andreas a numărat toate numerele!'
     },
     {
       title: 'Capitolul 5: Grădina Cuvintelor',
-      text: 'În <b>Grădina Cuvintelor</b>, Alessandra a descoperit flori care spuneau cuvinte frumoase: SOARE, LUNĂ, STELE, PRIETENIE... 🌸📝'
+      text: 'În <b>Grădina Cuvintelor</b>, Alessandra a descoperit flori care spuneau cuvinte frumoase: SOARE, LUNĂ, STELE, PRIETENIE... 🌸📝',
+      speech: 'În Grădina Cuvintelor, Alessandra a descoperit flori care spuneau cuvinte frumoase: SOARE, LUNĂ, STELE, PRIETENIE...'
     },
     {
       title: 'Capitolul 6: Valea Propozițiilor',
-      text: 'Au ajuns apoi în <b>Valea Propozițiilor</b>, unde pietrele formau propoziții complete. "Andreas și Alessandra învață împreună!" 📖✨'
+      text: 'Au ajuns apoi în <b>Valea Propozițiilor</b>, unde pietrele formau propoziții complete. "Andreas și Alessandra învață împreună!" 📖✨',
+      speech: 'Au ajuns apoi în Valea Propozițiilor, unde pietrele formau propoziții complete. Andreas și Alessandra învață împreună!'
     },
     {
       title: 'Capitolul 7: Prietenii Animale',
-      text: 'Au întâlnit apoi animale vorbitoare: un câine prietenos, o pisică jucăușă și un elefant înțelept. Toți erau fericiți să-i cunoască! 🐶🐱🐘'
+      text: 'Au întâlnit apoi animale vorbitoare: un câine prietenos, o pisică jucăușă și un elefant înțelept. Toți erau fericiți să-i cunoască! 🐶🐱🐘',
+      speech: 'Au întâlnit apoi animale vorbitoare: un câine prietenos, o pisică jucăușă și un elefant înțelept. Toți erau fericiți să-i cunoască!'
     },
     {
       title: 'Capitolul 8: Comoara Finală',
-      text: 'La finalul aventurii, Andreas și Alessandra au găsit o comoară: <b>Cunoașterea</b>! Au învățat că a citi, a număra și a descoperi lucruri noi este cea mai mare aventură! 💎📖'
+      text: 'La finalul aventurii, Andreas și Alessandra au găsit o comoară: <b>Cunoașterea</b>! Au învățat că a citi, a număra și a descoperi lucruri noi este cea mai mare aventură! 💎📖',
+      speech: 'La finalul aventurii, Andreas și Alessandra au găsit o comoară: Cunoașterea! Au învățat că a citi, a număra și a descoperi lucruri noi este cea mai mare aventură!'
     },
     {
       title: 'Final Fericit!',
-      text: '🎉 <b>Andreas</b> și <b>Alessandra</b> au devenit cei mai deștepți exploratori din lume! Și tu poți fi ca ei, învățând în fiecare zi! Felicitări! 🌟🏆'
+      text: '🎉 <b>Andreas</b> și <b>Alessandra</b> au devenit cei mai deștepți exploratori din lume! Și tu poți fi ca ei, învățând în fiecare zi! Felicitări! 🌟🏆',
+      speech: 'Andreas și Alessandra au devenit cei mai deștepți exploratori din lume! Și tu poți fi ca ei, învățând în fiecare zi! Felicitări!'
     }
   ];
 
   const quizQuestions = [
-    {q: 'Ce literă începe cuvântul "Măr"? 🍎', options: ['A', 'M', 'B', 'C'], correct: 1},
-    {q: 'Câte picioare are un câine? 🐶', options: ['2', '4', '6', '8'], correct: 1},
-    {q: 'Ce culoare are soarele? ☀️', options: ['Albastru', 'Verde', 'Galben', 'Roșu'], correct: 2},
-    {q: 'Care animal face "MIAU"? 🐱', options: ['Câinele', 'Pisica', 'Vaca', 'Porcul'], correct: 1},
-    {q: 'Câte zile sunt într-o săptămână?', options: ['5', '6', '7', '10'], correct: 2},
-    {q: 'Care număr vine după 49?', options: ['48', '50', '51', '60'], correct: 1},
-    {q: 'Cuvântul "SOARE" are câte litere?', options: ['4', '5', '6', '7'], correct: 1},
-    {q: 'Care propoziție este corectă?', options: ['Andreas merge.', 'Merge Andreas.', 'Andreas.', 'Merge.'], correct: 0},
-    {q: 'Ce animal are trompă lungă? 🐘', options: ['Leul', 'Girafa', 'Elefantul', 'Pinguinul'], correct: 2},
-    {q: 'Care număr este mai mare?', options: ['89', '98', '79', '97'], correct: 1}
+    {q: 'Ce literă începe cuvântul "Măr"? 🍎', options: ['A', 'M', 'B', 'C'], correct: 1, speech: 'Ce literă începe cuvântul Măr?'},
+    {q: 'Câte picioare are un câine? 🐶', options: ['2', '4', '6', '8'], correct: 1, speech: 'Câte picioare are un câine?'},
+    {q: 'Ce culoare are soarele? ☀️', options: ['Albastru', 'Verde', 'Galben', 'Roșu'], correct: 2, speech: 'Ce culoare are soarele?'},
+    {q: 'Care animal face "MIAU"? 🐱', options: ['Câinele', 'Pisica', 'Vaca', 'Porcul'], correct: 1, speech: 'Care animal face MIAU?'},
+    {q: 'Câte zile sunt într-o săptămână?', options: ['5', '6', '7', '10'], correct: 2, speech: 'Câte zile sunt într-o săptămână?'},
+    {q: 'Care număr vine după 49?', options: ['48', '50', '51', '60'], correct: 1, speech: 'Care număr vine după 49?'},
+    {q: 'Cuvântul "SOARE" are câte litere?', options: ['4', '5', '6', '7'], correct: 1, speech: 'Cuvântul SOARE are câte litere?'},
+    {q: 'Care propoziție este corectă?', options: ['Andreas merge.', 'Merge Andreas.', 'Andreas.', 'Merge.'], correct: 0, speech: 'Care propoziție este corectă?'},
+    {q: 'Ce animal are trompă lungă? 🐘', options: ['Leul', 'Girafa', 'Elefantul', 'Pinguinul'], correct: 2, speech: 'Ce animal are trompă lungă?'},
+    {q: 'Care număr este mai mare?', options: ['89', '98', '79', '97'], correct: 1, speech: 'Care număr este mai mare?'}
   ];
 
-  function startAdventure() {
-    document.getElementById('welcomeScreen').classList.add('hidden');
-    document.getElementById('menuScreen').classList.remove('hidden');
-  }
 
-  function openLesson(lessonId) {
-    if (lessonId === 'poveste') {
-      openStory();
-      return;
-    }
-    if (lessonId === 'quiz') {
-      openQuiz();
-      return;
-    }
-    currentLesson = lessonId;
-    currentIndex = 0;
-    document.getElementById('menuScreen').classList.add('hidden');
-    document.getElementById('lessonScreen').classList.remove('hidden');
-    document.getElementById('lessonMascot').textContent = lessons[lessonId].mascot;
-    
-    if (lessons[lessonId].type === 'numberGrid') {
-      showNumberGrid();
-    } else {
-      showCurrentItem();
-    }
-  }
 
-  function showNumberGrid() {
-    const content = document.getElementById('lessonContent');
-    document.getElementById('lessonSpeech').textContent = 'Iată numerele de la 1 la 100! Apasă pe un număr!';
-    
-    let html = '<div class="number-grid">';
-    const start = numberGridPage * 50 + 1;
-    const end = Math.min(start + 49, 100);
-    
-    for (let i = start; i <= end; i++) {
-      html += `<div class="number-cell" onclick="selectNumber(${i})">${i}</div>`;
-    }
-    html += '</div>';
-    
-    if (numberGridPage === 0) {
-      html += '<button class="btn" onclick="nextNumberPage()" style="margin-top:20px;">Următoarele 50 ▶</button>';
-    } else {
-      html += '<button class="btn back-btn" onclick="prevNumberPage()" style="margin-top:20px;">◀ Primele 50</button>';
-    }
-    
-    content.innerHTML = html;
-    document.getElementById('progressFill').style.width = ((numberGridPage + 1) * 50) + '%';
-    document.getElementById('nextBtn').style.display = 'none';
-  }
-
-  function selectNumber(num) {
-    const cells = document.querySelectorAll('.number-cell');
-    cells.forEach(cell => cell.classList.remove('highlight'));
-    
-    const cell = event.target;
-    if (cell && cell.classList.contains('number-cell')) {
-      cell.classList.add('highlight');
-      document.getElementById('lessonSpeech').textContent = `Ai selectat numărul ${num}! Bravo! 🎉`;
-      addScore(1);
-    }
-  }
-
-  function nextNumberPage() {
-    numberGridPage = 1;
-    showNumberGrid();
-  }
-
-  function prevNumberPage() {
-    numberGridPage = 0;
-    showNumberGrid();
-  }
-
-  function showCurrentItem() {
-    const lesson = lessons[currentLesson];
-    const item = lesson.items[currentIndex];
-    const content = document.getElementById('lessonContent');
-    
-    document.getElementById('lessonSpeech').textContent = item.speech || 'Hai să învățăm!';
-    
-    let html = '';
-    
-    if (currentLesson === 'cuvinte') {
-      html = `
-        <div class="word-display">${item.word}</div>
-        <div style="font-size:5em; margin:20px 0;">${item.emoji}</div>
-        <div class="sentence-box">${item.sentence}</div>
-      `;
-    } else if (currentLesson === 'propozitii') {
-      html = `
-        <div style="font-size:5em; margin:20px 0;">${item.emoji}</div>
-        <div class="sentence-box">${item.sentence}</div>
-        <p style="font-size:1.2em; color:#6c5ce7; margin-top:20px; font-weight:bold;">Tip: ${item.type}</p>
-      `;
-    } else if (item.display === 'color-box') {
-      html = `
-        <div style="width:180px; height:180px; border-radius:30px; margin:20px auto; background:${item.color}; box-shadow:0 10px 30px rgba(0,0,0,0.2); animation:pop 0.5s;"></div>
-        <div style="font-size:2.5em; font-weight:bold; color:#2d3436; margin:20px 0;">${item.name}</div>
-      `;
-    } else if (currentLesson === 'alfabet') {
-      html = `
-        <div style="font-size:8em; font-weight:bold; background:linear-gradient(135deg, #fd79a8, #fdcb6e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:pop 0.5s;">${item.display}</div>
-        <div style="font-size:2em; color:#2d3436; font-weight:bold; margin:20px 0;">${item.name}</div>
-      `;
-    } else {
-      html = `
-        <div style="font-size:7em; margin:20px 0; animation:pop 0.5s;">${item.display}</div>
-        <div style="font-size:2em; color:#2d3436; font-weight:bold; margin:20px 0;">${item.name}</div>
-      `;
-    }
-    
-    content.innerHTML = html;
-    
-    const progress = ((currentIndex + 1) / lesson.items.length) * 100;
-    document.getElementById('progressFill').style.width = progress + '%';
-    document.getElementById('nextBtn').style.display = 'inline-block';
-  }
-
-  function nextItem() {
-    const lesson = lessons[currentLesson];
-    if (currentIndex < lesson.items.length - 1) {
-      currentIndex++;
-      showCurrentItem();
-      addScore(2);
-    } else {
-      addScore(10);
-      showConfetti();
-      document.getElementById('lessonSpeech').textContent = `Bravo! Ai terminat lecția "${lesson.title}"! 🎉`;
-      document.getElementById('lessonContent').innerHTML = '<div class="mascot">🏆</div><h2 style="color:#00b894;">Felicitări!</h2>';
-      document.getElementById('nextBtn').textContent = 'La meniu ▶';
-      document.getElementById('nextBtn').onclick = goBack;
-    }
-  }
-
-  function openStory() {
-    storyPage = 0;
-    document.getElementById('menuScreen').classList.add('hidden');
-    document.getElementById('storyScreen').classList.remove('hidden');
-    showStoryPage();
-  }
-
-  function showStoryPage() {
-    const page = storyPages[storyPage];
-    document.getElementById('storyTitle').textContent = page.title;
-    document.getElementById('storyBox').innerHTML = page.text;
-    const progress = ((storyPage + 1) / storyPages.length) * 100;
-    document.getElementById('quizProgress').style.width = progress + '%';
-    
-    if (storyPage === storyPages.length - 1) {
-      document.getElementById('storyNextBtn').textContent = 'Final 🎉';
-    } else {
-      document.getElementById('storyNextBtn').textContent = 'Pagina următoare ▶';
-    }
-  }
-
-  function nextStoryPage() {
-    if (storyPage < storyPages.length - 1) {
-      storyPage++;
-      showStoryPage();
-      addScore(3);
-    } else {
-      addScore(15);
-      showConfetti();
-      goBack();
-    }
-  }
-
-  function openQuiz() {
-    quizIndex = 0;
-    document.getElementById('menuScreen').classList.add('hidden');
-    document.getElementById('quizScreen').classList.remove('hidden');
-    showQuizQuestion();
-  }
-
-  function showQuizQuestion() {
-    if (quizIndex >= quizQuestions.length) {
-      finishQuiz();
-      return;
-    }
-    const q = quizQuestions[quizIndex];
-    let html = `<h3 style="font-size:1.5em; margin:20px 0; color:#2d3436;">${q.q}</h3><div>`;
-    q.options.forEach((opt, i) => {
-      html += `<div class="quiz-option" onclick="checkAnswer(${i}, ${q.correct})">${opt}</div>`;
-    });
-    html += '</div>';
-    document.getElementById('quizContent').innerHTML = html;
-    const progress = (quizIndex / quizQuestions.length) * 100;
-    document.getElementById('quizProgress').style.width = progress + '%';
-  }
-
-  function checkAnswer(selected, correct) {
-    const options = document.querySelectorAll('.quiz-option');
-    options.forEach((opt, i) => {
-      opt.onclick = null;
-      if (i === correct) opt.classList.add('correct');
-      else if (i === selected) opt.classList.add('wrong');
-    });
-    if (selected === correct) {
-      addScore(5);
-      showConfetti();
-    }
-    setTimeout(() => {
-      quizIndex++;
-      showQuizQuestion();
-    }, 1500);
-  }
-
-  function finishQuiz() {
-    document.getElementById('quizContent').innerHTML = `
-      <div class="mascot">🏆</div>
-      <h2 style="color:#00b894; font-size:2em;">Felicitări, Andreas și Alessandra!</h2>
-      <p style="font-size:1.3em; margin:20px 0;">Ai terminat toate lecțiile!</p>
-      <div style="text-align:center; font-size:2em; margin:20px 0; color:#fdcb6e;">⭐ ${score} stele câștigate ⭐</div>
-    `;
-    document.getElementById('quizProgress').style.width = '100%';
-    showConfetti();
-    showConfetti();
-  }
-
-  function goBack() {
-    document.getElementById('lessonScreen').classList.add('hidden');
-    document.getElementById('storyScreen').classList.add('hidden');
-    document.getElementById('quizScreen').classList.add('hidden');
-    document.getElementById('menuScreen').classList.remove('hidden');
-    document.getElementById('nextBtn').textContent = 'Următorul ▶';
-    document.getElementById('nextBtn').onclick = nextItem;
-    document.getElementById('nextBtn').style.display = 'inline-block';
-    numberGridPage = 0;
-  }
-
-  function addScore(points) {
-    score += points;
-    document.getElementById('scoreDisplay').textContent = `⭐ ${score} stele`;
-  }
-
-  function showConfetti() {
-    const colors = ['#fd79a8', '#fdcb6e', '#74b9ff', '#55efc4', '#a29bfe', '#ff7675'];
-    for (let i = 0; i < 30; i++) {
-      const confetti = document.createElement('div');
-      confetti.className = 'confetti';
-      confetti.style.left = Math.random() * 100 + 'vw';
-      confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-      confetti.style.animationDelay = Math.random() * 0.5 + 's';
-      confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-      document.body.appendChild(confetti);
-      setTimeout(() => confetti.remove(), 3500);
-    }
-  }
-</script>
-
-</body>
-</html>
+const chapters = [{"title": "Saluturi", "icon": "👋", "level": "A1", "items": [{"en": "Hello!", "ro": "Bună!"}, {"en": "Good morning!", "ro": "Bună dimineața!"}, {"en": "Good evening!", "ro": "Bună seara!"}, {"en": "Goodbye!", "ro": "La revedere!"}, {"en": "How are you?", "ro": "Ce mai faci?"}, {"en": "I am fine.", "ro": "Sunt bine."}, {"en": "What is your name?", "ro": "Cum te cheamă?"}, {"en": "My name is Andreas.", "ro": "Mă numesc Andreas."}, {"en": "Nice to meet you.", "ro": "Îmi pare bine să te cunosc."}, {"en": "See you tomorrow!", "ro": "Ne vedem mâine!"}]}, {"title": "Familia mea", "icon": "👨‍👩‍👧‍👦", "level": "A1", "items": [{"en": "This is my mother.", "ro": "Aceasta este mama mea."}, {"en": "This is my father.", "ro": "Acesta este tatăl meu."}, {"en": "I have a sister.", "ro": "Am o soră."}, {"en": "I have a brother.", "ro": "Am un frate."}, {"en": "My family is happy.", "ro": "Familia mea este fericită."}, {"en": "My grandmother is kind.", "ro": "Bunica mea este bună."}, {"en": "My grandfather tells stories.", "ro": "Bunicul meu spune povești."}, {"en": "We eat dinner together.", "ro": "Mâncăm cina împreună."}, {"en": "I love my family.", "ro": "Îmi iubesc familia."}, {"en": "We help each other.", "ro": "Ne ajutăm reciproc."}]}, {"title": "La școală", "icon": "🏫", "level": "A1", "items": [{"en": "I go to school.", "ro": "Merg la școală."}, {"en": "This is my teacher.", "ro": "Acesta este profesorul meu."}, {"en": "I have a pencil.", "ro": "Am un creion."}, {"en": "Open your book.", "ro": "Deschide cartea."}, {"en": "Close the door.", "ro": "Închide ușa."}, {"en": "I can read.", "ro": "Pot să citesc."}, {"en": "I can write.", "ro": "Pot să scriu."}, {"en": "I like mathematics.", "ro": "Îmi place matematica."}, {"en": "My classroom is bright.", "ro": "Sala mea de clasă este luminoasă."}, {"en": "We learn together.", "ro": "Învățăm împreună."}]}, {"title": "Culori și forme", "icon": "🎨", "level": "A1", "items": [{"en": "The apple is red.", "ro": "Mărul este roșu."}, {"en": "The sky is blue.", "ro": "Cerul este albastru."}, {"en": "The grass is green.", "ro": "Iarba este verde."}, {"en": "The sun is yellow.", "ro": "Soarele este galben."}, {"en": "This is a circle.", "ro": "Acesta este un cerc."}, {"en": "That is a square.", "ro": "Acela este un pătrat."}, {"en": "I see a triangle.", "ro": "Văd un triunghi."}, {"en": "The flower is pink.", "ro": "Floarea este roz."}, {"en": "The cat is black.", "ro": "Pisica este neagră."}, {"en": "The snow is white.", "ro": "Zăpada este albă."}]}, {"title": "Animale", "icon": "🐾", "level": "A1", "items": [{"en": "The dog is friendly.", "ro": "Câinele este prietenos."}, {"en": "The cat is sleeping.", "ro": "Pisica doarme."}, {"en": "The bird can fly.", "ro": "Pasărea poate zbura."}, {"en": "The fish can swim.", "ro": "Peștele poate înota."}, {"en": "The elephant is big.", "ro": "Elefantul este mare."}, {"en": "The mouse is small.", "ro": "Șoarecele este mic."}, {"en": "The lion is strong.", "ro": "Leul este puternic."}, {"en": "The rabbit is fast.", "ro": "Iepurele este rapid."}, {"en": "The horse runs.", "ro": "Calul aleargă."}, {"en": "The turtle is slow.", "ro": "Țestoasa este lentă."}]}, {"title": "Mâncare", "icon": "🍎", "level": "A1", "items": [{"en": "I like apples.", "ro": "Îmi plac merele."}, {"en": "I drink water.", "ro": "Beau apă."}, {"en": "I eat breakfast.", "ro": "Mănânc micul dejun."}, {"en": "The soup is hot.", "ro": "Supa este fierbinte."}, {"en": "The ice cream is cold.", "ro": "Înghețata este rece."}, {"en": "I want a banana.", "ro": "Vreau o banană."}, {"en": "Do you like cheese?", "ro": "Îți place brânza?"}, {"en": "Yes, I do.", "ro": "Da, îmi place."}, {"en": "No, thank you.", "ro": "Nu, mulțumesc."}, {"en": "The cake is delicious.", "ro": "Prăjitura este delicioasă."}]}, {"title": "Acasă", "icon": "🏠", "level": "A1", "items": [{"en": "This is my house.", "ro": "Aceasta este casa mea."}, {"en": "The kitchen is clean.", "ro": "Bucătăria este curată."}, {"en": "My bed is comfortable.", "ro": "Patul meu este confortabil."}, {"en": "The lamp is on.", "ro": "Lampa este aprinsă."}, {"en": "The window is open.", "ro": "Fereastra este deschisă."}, {"en": "I wash my hands.", "ro": "Mă spăl pe mâini."}, {"en": "I tidy my room.", "ro": "Îmi fac ordine în cameră."}, {"en": "The book is on the table.", "ro": "Cartea este pe masă."}, {"en": "The shoes are under the bed.", "ro": "Pantofii sunt sub pat."}, {"en": "We live here.", "ro": "Locuim aici."}]}, {"title": "Corpul uman", "icon": "🖐️", "level": "A1", "items": [{"en": "I have two hands.", "ro": "Am două mâini."}, {"en": "I have ten fingers.", "ro": "Am zece degete."}, {"en": "My eyes are brown.", "ro": "Ochii mei sunt căprui."}, {"en": "I hear with my ears.", "ro": "Aud cu urechile."}, {"en": "I smell with my nose.", "ro": "Miros cu nasul."}, {"en": "I walk with my legs.", "ro": "Merg cu picioarele."}, {"en": "My heart is beating.", "ro": "Inima mea bate."}, {"en": "Brush your teeth.", "ro": "Spală-te pe dinți."}, {"en": "I feel healthy.", "ro": "Mă simt sănătos."}, {"en": "I need to rest.", "ro": "Trebuie să mă odihnesc."}]}, {"title": "Zile și luni", "icon": "📅", "level": "A1", "items": [{"en": "Today is Monday.", "ro": "Astăzi este luni."}, {"en": "Tomorrow is Tuesday.", "ro": "Mâine este marți."}, {"en": "Yesterday was Sunday.", "ro": "Ieri a fost duminică."}, {"en": "There are seven days in a week.", "ro": "Sunt șapte zile într-o săptămână."}, {"en": "January is cold.", "ro": "Ianuarie este friguroasă."}, {"en": "July is warm.", "ro": "Iulie este călduroasă."}, {"en": "My birthday is in May.", "ro": "Ziua mea este în mai."}, {"en": "The weekend is fun.", "ro": "Weekendul este distractiv."}, {"en": "What day is it?", "ro": "Ce zi este?"}, {"en": "It is Friday.", "ro": "Este vineri."}]}, {"title": "Vremea", "icon": "🌦️", "level": "A1", "items": [{"en": "It is sunny today.", "ro": "Astăzi este însorit."}, {"en": "It is raining.", "ro": "Plouă."}, {"en": "It is snowing.", "ro": "Ninge."}, {"en": "The wind is strong.", "ro": "Vântul este puternic."}, {"en": "The clouds are grey.", "ro": "Norii sunt gri."}, {"en": "It is very cold.", "ro": "Este foarte frig."}, {"en": "It is very hot.", "ro": "Este foarte cald."}, {"en": "I need an umbrella.", "ro": "Am nevoie de o umbrelă."}, {"en": "The weather is nice.", "ro": "Vremea este frumoasă."}, {"en": "What is the weather like?", "ro": "Cum este vremea?"}]}, {"title": "Haine", "icon": "👕", "level": "A1", "items": [{"en": "I wear a blue shirt.", "ro": "Port o cămașă albastră."}, {"en": "My shoes are new.", "ro": "Pantofii mei sunt noi."}, {"en": "Put on your jacket.", "ro": "Îmbracă-ți jacheta."}, {"en": "Take off your hat.", "ro": "Scoate-ți pălăria."}, {"en": "These socks are warm.", "ro": "Aceste șosete sunt călduroase."}, {"en": "My dress is yellow.", "ro": "Rochia mea este galbenă."}, {"en": "The trousers are black.", "ro": "Pantalonii sunt negri."}, {"en": "I need gloves.", "ro": "Am nevoie de mănuși."}, {"en": "This scarf is soft.", "ro": "Acest fular este moale."}, {"en": "What are you wearing?", "ro": "Cu ce ești îmbrăcat?"}]}, {"title": "La joacă", "icon": "⚽", "level": "A1", "items": [{"en": "I play football.", "ro": "Joc fotbal."}, {"en": "She rides a bicycle.", "ro": "Ea merge pe bicicletă."}, {"en": "He jumps high.", "ro": "El sare sus."}, {"en": "We play in the park.", "ro": "Ne jucăm în parc."}, {"en": "Throw the ball.", "ro": "Aruncă mingea."}, {"en": "Catch the ball!", "ro": "Prinde mingea!"}, {"en": "Can you run fast?", "ro": "Poți alerga repede?"}, {"en": "I like to dance.", "ro": "Îmi place să dansez."}, {"en": "Let us play together.", "ro": "Hai să ne jucăm împreună."}, {"en": "That was fun!", "ro": "A fost distractiv!"}]}, {"title": "Verbe de acțiune", "icon": "🏃", "level": "A1", "items": [{"en": "I am reading.", "ro": "Eu citesc."}, {"en": "You are writing.", "ro": "Tu scrii."}, {"en": "He is jumping.", "ro": "El sare."}, {"en": "She is singing.", "ro": "Ea cântă."}, {"en": "We are walking.", "ro": "Noi mergem pe jos."}, {"en": "They are running.", "ro": "Ei aleargă."}, {"en": "The baby is sleeping.", "ro": "Bebelușul doarme."}, {"en": "The dog is barking.", "ro": "Câinele latră."}, {"en": "I am learning English.", "ro": "Învăț engleză."}, {"en": "What are you doing?", "ro": "Ce faci?"}]}, {"title": "Întrebări simple", "icon": "❓", "level": "A1", "items": [{"en": "Where are you?", "ro": "Unde ești?"}, {"en": "Who is your friend?", "ro": "Cine este prietenul tău?"}, {"en": "What is this?", "ro": "Ce este aceasta?"}, {"en": "When do we start?", "ro": "Când începem?"}, {"en": "Why are you happy?", "ro": "De ce ești fericit?"}, {"en": "How old are you?", "ro": "Câți ani ai?"}, {"en": "Do you like music?", "ro": "Îți place muzica?"}, {"en": "Can you help me?", "ro": "Mă poți ajuta?"}, {"en": "Is this your book?", "ro": "Este aceasta cartea ta?"}, {"en": "Are you ready?", "ro": "Ești pregătit?"}]}, {"title": "Răspunsuri complete", "icon": "💬", "level": "A1", "items": [{"en": "I am eight years old.", "ro": "Am opt ani."}, {"en": "I live in Romania.", "ro": "Locuiesc în România."}, {"en": "My favourite colour is green.", "ro": "Culoarea mea preferată este verde."}, {"en": "I like reading books.", "ro": "Îmi place să citesc cărți."}, {"en": "I do not like spiders.", "ro": "Nu îmi plac păianjenii."}, {"en": "Yes, I can swim.", "ro": "Da, pot să înot."}, {"en": "No, I cannot fly.", "ro": "Nu, nu pot să zbor."}, {"en": "I am ready to learn.", "ro": "Sunt pregătit să învăț."}, {"en": "My friend is kind.", "ro": "Prietenul meu este amabil."}, {"en": "I feel great today.", "ro": "Mă simt grozav astăzi."}]}, {"title": "În oraș", "icon": "🏙️", "level": "A1+", "items": [{"en": "The library is near the school.", "ro": "Biblioteca este lângă școală."}, {"en": "The hospital is big.", "ro": "Spitalul este mare."}, {"en": "We go to the supermarket.", "ro": "Mergem la supermarket."}, {"en": "Turn left at the corner.", "ro": "Fă stânga la colț."}, {"en": "Turn right at the park.", "ro": "Fă dreapta la parc."}, {"en": "Go straight ahead.", "ro": "Mergi drept înainte."}, {"en": "Where is the station?", "ro": "Unde este stația?"}, {"en": "The bus is late.", "ro": "Autobuzul întârzie."}, {"en": "I cross the street carefully.", "ro": "Traversez strada cu grijă."}, {"en": "The museum is interesting.", "ro": "Muzeul este interesant."}]}, {"title": "La cumpărături", "icon": "🛒", "level": "A1+", "items": [{"en": "How much is this?", "ro": "Cât costă aceasta?"}, {"en": "I would like some bread.", "ro": "Aș dori niște pâine."}, {"en": "Can I have an apple?", "ro": "Pot primi un măr?"}, {"en": "Here is the money.", "ro": "Iată banii."}, {"en": "Thank you very much.", "ro": "Mulțumesc foarte mult."}, {"en": "You are welcome.", "ro": "Cu plăcere."}, {"en": "This toy is expensive.", "ro": "Această jucărie este scumpă."}, {"en": "That pencil is cheap.", "ro": "Acel creion este ieftin."}, {"en": "We need milk.", "ro": "Avem nevoie de lapte."}, {"en": "Have a nice day!", "ro": "O zi frumoasă!"}]}, {"title": "Prietenie", "icon": "🤝", "level": "A1+", "items": [{"en": "You are my best friend.", "ro": "Ești cel mai bun prieten al meu."}, {"en": "Can we play together?", "ro": "Ne putem juca împreună?"}, {"en": "I am sorry.", "ro": "Îmi pare rău."}, {"en": "Please forgive me.", "ro": "Te rog să mă ierți."}, {"en": "I can share my toys.", "ro": "Pot să împart jucăriile mele."}, {"en": "Let me help you.", "ro": "Lasă-mă să te ajut."}, {"en": "That is very kind.", "ro": "Este foarte amabil."}, {"en": "We work as a team.", "ro": "Lucrăm în echipă."}, {"en": "Friends listen to each other.", "ro": "Prietenii se ascultă reciproc."}, {"en": "Everyone is welcome.", "ro": "Toată lumea este binevenită."}]}, {"title": "Emoții", "icon": "😊", "level": "A1+", "items": [{"en": "I am happy.", "ro": "Sunt fericit."}, {"en": "She is sad.", "ro": "Ea este tristă."}, {"en": "He is surprised.", "ro": "El este surprins."}, {"en": "I feel nervous.", "ro": "Sunt emoționat."}, {"en": "Do not be afraid.", "ro": "Nu-ți fie frică."}, {"en": "I am proud of you.", "ro": "Sunt mândru de tine."}, {"en": "We are excited.", "ro": "Suntem entuziasmați."}, {"en": "Take a deep breath.", "ro": "Inspiră adânc."}, {"en": "How do you feel?", "ro": "Cum te simți?"}, {"en": "I feel better now.", "ro": "Acum mă simt mai bine."}]}, {"title": "Descrieri", "icon": "🔍", "level": "A1+", "items": [{"en": "The elephant is bigger than the cat.", "ro": "Elefantul este mai mare decât pisica."}, {"en": "This road is long.", "ro": "Acest drum este lung."}, {"en": "That box is heavy.", "ro": "Acea cutie este grea."}, {"en": "My bag is light.", "ro": "Geanta mea este ușoară."}, {"en": "The rabbit is faster than the turtle.", "ro": "Iepurele este mai rapid decât țestoasa."}, {"en": "This puzzle is difficult.", "ro": "Acest puzzle este dificil."}, {"en": "The answer is easy.", "ro": "Răspunsul este ușor."}, {"en": "The mountain is very high.", "ro": "Muntele este foarte înalt."}, {"en": "The river is deep.", "ro": "Râul este adânc."}, {"en": "The garden is beautiful.", "ro": "Grădina este frumoasă."}]}, {"title": "Timpul prezent", "icon": "⏰", "level": "A1+", "items": [{"en": "I wake up at seven.", "ro": "Mă trezesc la șapte."}, {"en": "She eats breakfast every day.", "ro": "Ea mănâncă micul dejun în fiecare zi."}, {"en": "He walks to school.", "ro": "El merge pe jos la școală."}, {"en": "We study English.", "ro": "Studiem engleza."}, {"en": "They play after school.", "ro": "Ei se joacă după școală."}, {"en": "My mother works in an office.", "ro": "Mama mea lucrează într-un birou."}, {"en": "The sun rises in the morning.", "ro": "Soarele răsare dimineața."}, {"en": "I always brush my teeth.", "ro": "Mă spăl mereu pe dinți."}, {"en": "I sometimes read at night.", "ro": "Uneori citesc seara."}, {"en": "I never forget my homework.", "ro": "Nu îmi uit niciodată temele."}]}, {"title": "Acțiuni în desfășurare", "icon": "🎬", "level": "A1+", "items": [{"en": "I am drawing a picture.", "ro": "Desenez o imagine."}, {"en": "She is making a sandwich.", "ro": "Ea pregătește un sandviș."}, {"en": "He is playing the piano.", "ro": "El cântă la pian."}, {"en": "We are watching a film.", "ro": "Ne uităm la un film."}, {"en": "They are building a castle.", "ro": "Ei construiesc un castel."}, {"en": "The birds are singing.", "ro": "Păsările cântă."}, {"en": "It is raining outside.", "ro": "Afară plouă."}, {"en": "I am looking for my keys.", "ro": "Îmi caut cheile."}, {"en": "Are you listening?", "ro": "Asculți?"}, {"en": "What is she doing?", "ro": "Ce face ea?"}]}, {"title": "Trecut simplu", "icon": "🕰️", "level": "A1+", "items": [{"en": "Yesterday I played outside.", "ro": "Ieri m-am jucat afară."}, {"en": "We visited our grandparents.", "ro": "Ne-am vizitat bunicii."}, {"en": "She watched a movie.", "ro": "Ea a urmărit un film."}, {"en": "He opened the window.", "ro": "El a deschis fereastra."}, {"en": "I walked to the park.", "ro": "Am mers pe jos în parc."}, {"en": "They cleaned the room.", "ro": "Ei au curățat camera."}, {"en": "We cooked dinner.", "ro": "Am gătit cina."}, {"en": "I finished my homework.", "ro": "Mi-am terminat temele."}, {"en": "The rain stopped.", "ro": "Ploaia s-a oprit."}, {"en": "We enjoyed the trip.", "ro": "Ne-a plăcut excursia."}]}, {"title": "Planuri de viitor", "icon": "🚀", "level": "A2", "items": [{"en": "Tomorrow I will read a book.", "ro": "Mâine voi citi o carte."}, {"en": "We will visit the zoo.", "ro": "Vom vizita grădina zoologică."}, {"en": "She will learn a new song.", "ro": "Ea va învăța un cântec nou."}, {"en": "He will help his friend.", "ro": "El își va ajuta prietenul."}, {"en": "I am going to draw.", "ro": "Am de gând să desenez."}, {"en": "We are going to play football.", "ro": "Avem de gând să jucăm fotbal."}, {"en": "It will be sunny.", "ro": "Va fi însorit."}, {"en": "I will try again.", "ro": "Voi încerca din nou."}, {"en": "Will you come with us?", "ro": "Vei veni cu noi?"}, {"en": "Our adventure will continue.", "ro": "Aventura noastră va continua."}]}, {"title": "Dialog la restaurant", "icon": "🍽️", "level": "A2", "items": [{"en": "Hello, may I have a menu?", "ro": "Bună, pot primi un meniu?"}, {"en": "I would like some soup.", "ro": "Aș dori niște supă."}, {"en": "What would you like to drink?", "ro": "Ce ai dori să bei?"}, {"en": "A glass of water, please.", "ro": "Un pahar cu apă, vă rog."}, {"en": "Is the food ready?", "ro": "Este mâncarea gata?"}, {"en": "This tastes delicious.", "ro": "Este delicios."}, {"en": "Can we have some bread?", "ro": "Putem primi niște pâine?"}, {"en": "I am full, thank you.", "ro": "Sunt sătul, mulțumesc."}, {"en": "May I have the bill?", "ro": "Pot primi nota de plată?"}, {"en": "Have a lovely evening!", "ro": "O seară minunată!"}]}, {"title": "Dialog în excursie", "icon": "🧭", "level": "A2", "items": [{"en": "Where are we going today?", "ro": "Unde mergem astăzi?"}, {"en": "We are going to the mountains.", "ro": "Mergem la munte."}, {"en": "Did you pack your bag?", "ro": "Ți-ai pregătit rucsacul?"}, {"en": "Yes, I packed everything.", "ro": "Da, am pregătit totul."}, {"en": "Look at that beautiful lake!", "ro": "Uită-te la acel lac frumos!"}, {"en": "Can we take a picture?", "ro": "Putem face o fotografie?"}, {"en": "Let us follow the path.", "ro": "Hai să urmăm poteca."}, {"en": "We should stay together.", "ro": "Ar trebui să rămânem împreună."}, {"en": "I found a small flower.", "ro": "Am găsit o floare mică."}, {"en": "What a wonderful adventure!", "ro": "Ce aventură minunată!"}]}, {"title": "Misterul bibliotecii", "icon": "📚", "level": "A2", "items": [{"en": "The library door was open.", "ro": "Ușa bibliotecii era deschisă."}, {"en": "Andreas found an old map.", "ro": "Andreas a găsit o hartă veche."}, {"en": "Alessandra noticed a strange symbol.", "ro": "Alessandra a observat un simbol ciudat."}, {"en": "The map showed a hidden room.", "ro": "Harta arăta o cameră ascunsă."}, {"en": "They looked behind the bookshelf.", "ro": "Au privit în spatele bibliotecii."}, {"en": "A tiny key fell to the floor.", "ro": "O cheie mică a căzut pe podea."}, {"en": "The key opened a wooden box.", "ro": "Cheia a deschis o cutie de lemn."}, {"en": "Inside was a mysterious letter.", "ro": "Înăuntru era o scrisoare misterioasă."}, {"en": "The letter contained a riddle.", "ro": "Scrisoarea conținea o ghicitoare."}, {"en": "They solved the mystery together.", "ro": "Au rezolvat misterul împreună."}]}, {"title": "Castelul cuvintelor", "icon": "🏰", "level": "A2", "items": [{"en": "A magical castle appeared in the clouds.", "ro": "Un castel magic a apărut în nori."}, {"en": "The gate was locked by a puzzle.", "ro": "Poarta era încuiată de un puzzle."}, {"en": "They needed three secret words.", "ro": "Aveau nevoie de trei cuvinte secrete."}, {"en": "The first word meant courage.", "ro": "Primul cuvânt însemna curaj."}, {"en": "The second word meant kindness.", "ro": "Al doilea cuvânt însemna bunătate."}, {"en": "The third word meant friendship.", "ro": "Al treilea cuvânt însemna prietenie."}, {"en": "The gates opened slowly.", "ro": "Porțile s-au deschis încet."}, {"en": "An owl welcomed the children.", "ro": "O bufniță i-a întâmpinat pe copii."}, {"en": "Every room contained a new challenge.", "ro": "Fiecare cameră conținea o nouă provocare."}, {"en": "Knowledge was the greatest treasure.", "ro": "Cunoașterea era cea mai mare comoară."}]}, {"title": "Misiunea spațială", "icon": "🚀", "level": "A2", "items": [{"en": "Our spaceship is ready to launch.", "ro": "Nava noastră spațială este gata de lansare."}, {"en": "We are travelling to a new planet.", "ro": "Călătorim spre o planetă nouă."}, {"en": "The stars are shining brightly.", "ro": "Stelele strălucesc puternic."}, {"en": "We must follow the instructions.", "ro": "Trebuie să urmăm instrucțiunile."}, {"en": "The robot needs our help.", "ro": "Robotul are nevoie de ajutorul nostru."}, {"en": "Can you repair the engine?", "ro": "Poți repara motorul?"}, {"en": "We found water on the planet.", "ro": "Am găsit apă pe planetă."}, {"en": "The mission is almost complete.", "ro": "Misiunea este aproape terminată."}, {"en": "We are returning to Earth.", "ro": "Ne întoarcem pe Pământ."}, {"en": "Teamwork made our mission successful.", "ro": "Munca în echipă a făcut misiunea un succes."}]}, {"title": "Marea provocare", "icon": "🏆", "level": "A2", "items": [{"en": "Learning a language takes practice.", "ro": "Învățarea unei limbi necesită exercițiu."}, {"en": "I can understand short stories.", "ro": "Pot înțelege povești scurte."}, {"en": "I can ask useful questions.", "ro": "Pot pune întrebări utile."}, {"en": "I can describe my favourite places.", "ro": "Pot descrie locurile mele preferate."}, {"en": "I know how to make new friends.", "ro": "Știu cum să-mi fac prieteni noi."}, {"en": "Mistakes help us learn.", "ro": "Greșelile ne ajută să învățăm."}, {"en": "Every day I become more confident.", "ro": "În fiecare zi devin mai încrezător."}, {"en": "I can solve difficult puzzles.", "ro": "Pot rezolva puzzle-uri dificile."}, {"en": "Andreas and Alessandra are great explorers.", "ro": "Andreas și Alessandra sunt exploratori grozavi."}, {"en": "Our adventure has just begun!", "ro": "Aventura noastră abia a început!"}]}];
+const PROFILE_KEY='andreas_alessandra_v2';
+let data={Andreas:{stars:0,completed:{},best:{}},Alessandra:{stars:0,completed:{},best:{}}};
+try {let saved=JSON.parse(localStorage.getItem(PROFILE_KEY)||'null');if(saved) for(const name of ['Andreas','Alessandra']) if(saved[name]) data[name]={...data[name],...saved[name]};}catch(e){}
+let active=null,chapter=null,idx=0,mode='learn',answered=false,correctCount=0,quizSet=[],selectedWords=[],musicEnabled=false,voiceEnabled=true,audioContext=null,musicTimer=null,voiceReady=false;
+const $=id=>document.getElementById(id);
+const save=()=>{try{localStorage.setItem(PROFILE_KEY,JSON.stringify(data));}catch(e){}};
+function refreshHeader(){ $('profileLabel').textContent=active||'Alege profilul';$('starsLabel').textContent='⭐ '+(active?data[active].stars:0); }
+function hideAll(){for(const id of ['profiles','menu','play','finish']) $(id).classList.add('hidden');window.scrollTo(0,0);}
+function showProfiles(){stopSpeech();active=null;hideAll();$('profiles').classList.remove('hidden');refreshHeader();}
+function chooseProfile(name){active=name;showMenu();}
+function addScore(points){if(!active)return;data[active].stars+=points;save();refreshHeader();}
+function showMenu(){stopSpeech();hideAll();$('menu').classList.remove('hidden');$('welcomeName').textContent='Bun venit, '+active+'! 🌟';refreshHeader();renderMenu();}
+function renderMenu(){
+const originals=[['alfabet','🔤','Alfabetul'],['numere100','💯','Numere 1–100'],['cuvinte','📝','Cuvinte'],['propozitii','📖','Propoziții'],['animale','🐾','Animale'],['culori','🎨','Culori'],['poveste','📚','Povestea magică'],['quiz','🏆','Quiz original']];
+$('originalGrid').innerHTML=originals.map(([id,icon,title],i)=>`<button class="lesson-card" style="--c1:${['#ff7675','#74b9ff','#00b894','#e17055','#6c5ce7','#e84393','#f39c12','#00cec9'][i]};--c2:#6553c9" onclick="openOriginal('${id}')"><span class="icon">${icon}</span><h3>${title}</h3></button>`).join('');
+$('chapterGrid').innerHTML=chapters.map((c,i)=>{const done=data[active].completed['en'+i];const locked=i>0&&!data[active].completed['en'+(i-1)];return `<button class="lesson-card ${locked?'locked':''}" style="--c1:${i<15?'#1bbba4':i<23?'#4183e8':'#8054d9'};--c2:#4a368f" onclick="openChapter(${i})"><span class="icon">${locked?'🔒':c.icon}</span><h3>${i+1}. ${c.title}</h3><small>${c.level} · ${done?'✅ Finalizat':locked?'Deblochează anterior':'Disponibil'}</small></button>`;}).join('');}
+function openChapter(i){if(i>0&&!data[active].completed['en'+(i-1)]){alert('Finalizează capitolul anterior pentru a debloca această aventură.');return;}chapter={kind:'english',id:i,info:chapters[i]};idx=0;correctCount=0;setMode('learn');hideAll();$('play').classList.remove('hidden');updateHeading();renderExercise();}
+function openOriginal(id){chapter={kind:'original',id,info:lessons[id]||{title:id==='poveste'?'Povestea magică':'Quiz original',mascot:id==='poveste'?'📚':'🏆'}};idx=0;correctCount=0;mode='learn';hideAll();$('play').classList.remove('hidden');updateHeading();renderExercise();}
+function updateHeading(){ $('chapterIcon').textContent=chapter.kind==='english'?chapter.info.icon:chapter.info.mascot;$('chapterTitle').textContent=chapter.kind==='english'?(chapter.id+1)+'. '+chapter.info.title:chapter.info.title;$('chapterMeta').textContent=chapter.kind==='english'?'Engleză '+chapter.info.level+' · 10 propoziții · 4 activități':'Lecția originală';$('modeLearn').parentNode.style.display=chapter.kind==='english'?'flex':'none';}
+function setMode(m){if(!chapter||chapter.kind!=='english')return;mode=m;idx=0;correctCount=0;answered=false;selectedWords=[];quizSet=chapter.info.items.map((item,i)=>({item,i}));for(const b of ['Learn','Quiz','Build','Listen'])$('mode'+b).classList.toggle('active',b.toLowerCase()===m);renderExercise();}
+function progress(n,total){$('progressFill').style.width=Math.round(100*n/total)+'%';}
+function speak(text,lang='ro-RO'){
+if(!voiceEnabled)return;
+try{if(window.AndroidVoice&&typeof window.AndroidVoice.speak==='function'){window.AndroidVoice.speak(String(text),lang);return;}}catch(e){}
+if('speechSynthesis' in window){window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(String(text));u.lang=lang;u.rate=lang.startsWith('en')?.82:.9;u.pitch=1;const v=speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith(lang.slice(0,2).toLowerCase()));if(v)u.voice=v;speechSynthesis.speak(u);}
+}
+function stopSpeech(){try{window.AndroidVoice?.stop();}catch(e){}try{speechSynthesis?.cancel();}catch(e){}}
+function toggleVoice(){voiceEnabled=!voiceEnabled;$('voiceBtn').textContent=voiceEnabled?'🔊':'🔇';if(!voiceEnabled)stopSpeech();}
+const melodyNotes=[523.25,587.33,659.25,783.99,659.25,587.33,523.25,0];
+function playMelody(){if(!musicEnabled)return;try{audioContext=audioContext||new(window.AudioContext||window.webkitAudioContext)();audioContext.resume();let t=audioContext.currentTime;for(const f of melodyNotes){if(f){let o=audioContext.createOscillator(),g=audioContext.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.035,t);g.gain.exponentialRampToValueAtTime(.001,t+.26);o.connect(g);g.connect(audioContext.destination);o.start(t);o.stop(t+.27);}t+=.32;}}catch(e){}}
+function toggleMusic(){musicEnabled=!musicEnabled;$('musicBtn').textContent=musicEnabled?'🎵':'🔕';if(musicTimer)clearInterval(musicTimer);musicTimer=null;if(musicEnabled){playMelody();musicTimer=setInterval(playMelody,2800);}}
+function renderExercise(){answered=false;selectedWords=[];if(chapter.kind==='original')return renderOriginal();const item=chapter.info.items[idx];const total=chapter.info.items.length;progress(idx,total);$('nextBtn').textContent=idx===total-1?'Finalizează 🏆':'Următorul ▶';$('nextBtn').disabled=mode!=='learn';let h='';
+if(mode==='learn')h=`<p class="mutedtext">Propoziția ${idx+1} din ${total}</p><div class="phrase"><div class="english">${escapeHtml(item.en)}</div><div class="romanian">${escapeHtml(item.ro)}</div></div><button class="listenbtn" onclick="speak(chapter.info.items[idx].en,'en-US')">🔊 Ascultă engleza</button><button class="listenbtn" onclick="speak(chapter.info.items[idx].ro,'ro-RO')">🔊 Ascultă româna</button><p class="hint">Ascultă și repetă cu voce tare.</p>`;
+else if(mode==='quiz'||mode==='listen'){
+const options=[idx,(idx+3)%total,(idx+6)%total,(idx+8)%total].sort((a,b)=>((a*17+idx*13)%11)-((b*17+idx*13)%11));const question=mode==='quiz'?`Ce înseamnă în română?<div class="phrase english">${escapeHtml(item.en)}</div>`:`Ascultă propoziția și alege traducerea corectă.<div><button class="listenbtn" onclick="speak(chapter.info.items[idx].en,'en-US')">🔊 Ascultă</button></div>`;
+h=`<p class="mutedtext">Întrebarea ${idx+1} din ${total}</p><h3>${question}</h3><div class="answers">${options.map(i=>`<button class="quiz-option" onclick="answerQuiz(${i})">${escapeHtml(chapter.info.items[i].ro)}</button>`).join('')}</div><p class="feedback" id="feedback"></p>`;}
+else if(mode==='build'){
+const words=item.en.replace(/[.!?]/g,'').split(' ');const shuffled=words.map((word,i)=>({word,i})).sort((a,b)=>((a.i*7+idx*5)%13)-((b.i*7+idx*5)%13));quizSet=shuffled;
+h=`<p class="mutedtext">Construiește propoziția ${idx+1} din ${total}</p><div class="phrase"><div class="romanian">${escapeHtml(item.ro)}</div></div><p>Apasă cuvintele în ordinea corectă:</p><div id="answerBox" class="answerbox">Alege cuvintele...</div><div id="wordBank" class="wordbank">${shuffled.map((w,i)=>`<button id="word${i}" onclick="pickWord(${i})">${escapeHtml(w.word)}</button>`).join('')}</div><button class="listenbtn" onclick="checkBuilt()">✓ Verifică</button><button class="listenbtn" onclick="renderExercise()">↺ Reîncepe</button><p class="feedback" id="feedback"></p>`;}
+$('exercise').innerHTML=h;
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function answerQuiz(answer){if(answered)return;answered=true;const right=answer===idx;for(const b of $('exercise').querySelectorAll('.quiz-option'))b.disabled=true;$('feedback').textContent=right?'🎉 Corect! +5 stele':'Mai încearcă data viitoare! Răspuns: '+chapter.info.items[idx].ro;$('feedback').style.color=right?'#008f70':'#b53d4b';if(right){correctCount++;addScore(5);showConfetti();speak('Bravo, ai răspuns corect!');}else{speak(chapter.info.items[idx].en,'en-US');}$('nextBtn').disabled=false;}
+function pickWord(i){if(answered)return;selectedWords.push(i);$('word'+i).disabled=true;const b=$('answerBox');b.innerHTML=selectedWords.map(k=>`<button onclick="unpickWord(${k})">${escapeHtml(quizSet[k].word)} ✕</button>`).join('');}
+function unpickWord(i){if(answered)return;selectedWords=selectedWords.filter(x=>x!==i);$('word'+i).disabled=false;$('answerBox').innerHTML=selectedWords.length?selectedWords.map(k=>`<button onclick="unpickWord(${k})">${escapeHtml(quizSet[k].word)} ✕</button>`).join(''):'Alege cuvintele...';}
+function checkBuilt(){if(answered)return;const expected=chapter.info.items[idx].en.replace(/[.!?]/g,'').trim().split(' ');if(selectedWords.length!==expected.length){$('feedback').textContent='Folosește toate cuvintele.';return;}answered=true;const actual=selectedWords.map(i=>quizSet[i].word);const right=actual.join(' ')===expected.join(' ');$('feedback').textContent=right?'🎉 Propoziție corectă! +5 stele':'Ordinea corectă: '+chapter.info.items[idx].en;$('feedback').style.color=right?'#008f70':'#b53d4b';if(right){correctCount++;addScore(5);showConfetti();}speak(chapter.info.items[idx].en,'en-US');$('nextBtn').disabled=false;}
+function nextExercise(){if(chapter.kind==='original')return nextOriginal();if(idx<chapter.info.items.length-1){idx++;renderExercise();}else{if(mode==='learn'){addScore(10);}const key='en'+chapter.id;if(!data[active].completed[key]){data[active].completed[key]=true;addScore(15);}data[active].best[key]=Math.max(data[active].best[key]||0,correctCount);save();finish('Ai terminat capitolul „'+chapter.info.title+'”! '+(mode==='learn'?'Ai explorat toate propozițiile.':'Răspunsuri corecte: '+correctCount+' din '+chapter.info.items.length)+'. Ai deblocat următorul capitol!');}}
+function restartChapter(){if(!chapter)return;if(chapter.kind==='english')openChapter(chapter.id);else openOriginal(chapter.id);}
+function finish(text){stopSpeech();hideAll();$('finish').classList.remove('hidden');$('finishText').textContent=text;showConfetti();speak('Felicitări! Ai terminat capitolul!');}
+function renderOriginal(){answered=false;const id=chapter.id;let content='',total=1;
+if(id==='poveste'){total=storyPages.length;const p=storyPages[idx];content=`<h3>${escapeHtml(p.title)}</h3><div class="story-box">${p.text}</div><button class="listenbtn" onclick="speak(storyPages[idx].speech)">🔊 Ascultă povestea</button>`;}
+else if(id==='quiz'){total=quizQuestions.length;const q=quizQuestions[idx];content=`<h3>${escapeHtml(q.q)}</h3><div class="answers">${q.options.map((o,i)=>`<button class="quiz-option" onclick="answerOriginal(${i})">${escapeHtml(o)}</button>`).join('')}</div><p class="feedback" id="feedback"></p>`;}
+else if(id==='numere100'){total=100;const start=Math.floor(idx/50)*50+1;content=`<h3>Atinge numerele pentru a le asculta</h3><div class="number-grid">${Array.from({length:50},(_,i)=>`<button class="number-cell" onclick="speak('${start+i}')">${start+i}</button>`).join('')}</div>`;}
+else{const item=lessons[id].items[idx];total=lessons[id].items.length;let main='';if(id==='cuvinte')main=`<div class="original-emoji">${item.emoji}</div><div class="english">${escapeHtml(item.word)}</div><p>${escapeHtml(item.sentence)}</p>`;else if(id==='propozitii')main=`<div class="original-emoji">${item.emoji}</div><div class="original-box">${escapeHtml(item.sentence)}</div>`;else if(id==='culori')main=`<div style="width:160px;height:160px;background:${item.color};border-radius:20px;margin:10px auto"></div><div class="original-box">${escapeHtml(item.name)}</div>`;else main=`<div class="original-emoji">${item.display}</div><div class="original-box">${escapeHtml(item.name)}</div>`;content=`${main}<button class="listenbtn" onclick="speak(lessons[chapter.id].items[idx].speech)">🔊 Ascultă</button>`;}
+progress(idx,total);$('exercise').innerHTML=content;$('nextBtn').textContent=idx>=total-1?'Finalizează 🏆':'Următorul ▶';$('nextBtn').disabled=id==='quiz';}
+function answerOriginal(i){if(answered)return;answered=true;const q=quizQuestions[idx];let good=i===q.correct;for(const b of $('exercise').querySelectorAll('.quiz-option'))b.disabled=true;$('feedback').textContent=good?'Bravo! +5 stele':'Răspuns corect: '+q.options[q.correct];if(good){addScore(5);correctCount++;showConfetti();}speak(good?'Bravo!':'Mai încearcă data viitoare!');$('nextBtn').disabled=false;}
+function nextOriginal(){let total=chapter.id==='poveste'?storyPages.length:chapter.id==='quiz'?quizQuestions.length:chapter.id==='numere100'?100:lessons[chapter.id].items.length;if(chapter.id==='numere100'&&idx<49){idx=49;renderOriginal();return;}if(idx<total-1){idx++;if(chapter.id==='numere100'&&idx===50)idx=99;renderOriginal();}else{const key='original_'+chapter.id;if(!data[active].completed[key]){data[active].completed[key]=true;addScore(15);}save();finish('Ai terminat „'+chapter.info.title+'”! Excelent!');}}
+function showConfetti(){const colors=['#fd79a8','#fdcb6e','#74b9ff','#55efc4','#a29bfe'];for(let i=0;i<25;i++){const e=document.createElement('div');e.className='confetti';e.style.left=Math.random()*100+'vw';e.style.top='-15px';e.style.background=colors[i%colors.length];e.style.animationDelay=Math.random()*.7+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),3800);}}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSpeech();});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&active)showMenu();});
+showProfiles();
+</script></body></html>
